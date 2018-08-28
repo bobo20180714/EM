@@ -1,0 +1,403 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.sys.mappers.SysDictionaryMapper" >
+	<resultMap id="DictTreeNodeResultMap" type="com.em.common.zTree.ZTreeNode" >
+	    <id column="ID" property="id" jdbcType="VARCHAR" />
+	    <result column="PID" property="pId" jdbcType="VARCHAR" />
+	    <result column="NAME" property="name" jdbcType="VARCHAR" />
+	    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+	    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+	    <result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+	    <result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+	    <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+	</resultMap>
+  <resultMap id="BaseResultMap" type="com.em.core.sys.dictionary.entity.SysDictionary" >
+    <id column="DIC_ID" property="dicId" jdbcType="VARCHAR" />
+    <result column="TEXT" property="text" jdbcType="VARCHAR" />
+    <result column="VALUE" property="value" jdbcType="VARCHAR" />
+    <result column="TYPE_ID" property="typeId" jdbcType="VARCHAR" />
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="IS_USE" property="isUse" jdbcType="CHAR" />
+    <result column="PID" property="pid" jdbcType="VARCHAR" />
+    <result column="SEQ" property="seq" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    DIC_ID, TEXT, VALUE, TYPE_ID, TYPE_CODE, IS_USE, PID, SEQ
+  </sql>
+  <!-- 通过map更新   没用到-->
+   <update id="rightUpdate" parameterType="map" >
+   		UPDATE SYS_DICTIONARY
+    <set >
+      <if test="TEXT != null" >
+        TEXT = #{TEXT},
+      </if>
+      <if test="VALUE != null" >
+        VALUE = #{VALUE},
+      </if>
+      <if test="TYPE_ID != null" >
+        TYPE_ID = #{TYPE_ID},
+      </if>
+      <if test="TYPE_CODE != null" >
+        TYPE_CODE = #{TYPE_CODE},
+      </if>
+      <if test="IS_USE != null" >
+        IS_USE = #{IS_USE},
+      </if>
+      <if test="SEQ != null and SEQ != ''" >
+        SEQ = #{SEQ},
+      </if>
+    </set>
+    WHERE 1=1 
+    <if test="DIC_ID != null" >
+    	AND DIC_ID = #{DIC_ID}
+    </if>
+    <if test="OLD_TYPE_CODE != null" >
+    	AND TYPE_CODE = #{OLD_TYPE_CODE}
+    </if>
+    <if test="TYPE_ID != null" >
+    	AND TYPE_ID = #{TYPE_ID}
+    </if>
+  </update>
+  <select id="count" resultType="int" parameterType="map">
+
+		SELECT
+
+		COUNT(*)
+
+		FROM SYS_DICTIONARY
+
+		WHERE 1=1
+
+		<if test="LIKE_STR != null">
+
+			AND (${LIKE_STR})
+
+		</if>
+
+	</select>
+  <select id="queryPage" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1
+  </select> 
+  <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where 1=1
+  </select> 
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from SYS_DICTIONARY
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SYS_DICTIONARY
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.sys.dictionary.entity.SysDictionary" >
+    insert into SYS_DICTIONARY (DIC_ID, TEXT, VALUE, 
+      TYPE_ID, TYPE_CODE, IS_USE, 
+      PID, SEQ)
+    values (#{dicId,jdbcType=VARCHAR}, #{text,jdbcType=VARCHAR}, #{value,jdbcType=VARCHAR}, 
+      #{typeId,jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, #{isUse,jdbcType=CHAR}, 
+      #{pid,jdbcType=VARCHAR}, #{seq,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.sys.dictionary.entity.SysDictionary" >
+    insert into SYS_DICTIONARY
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="dicId != null" >
+        DIC_ID,
+      </if>
+      <if test="text != null" >
+        TEXT,
+      </if>
+      <if test="value != null" >
+        VALUE,
+      </if>
+      <if test="typeId != null" >
+        TYPE_ID,
+      </if>
+      <if test="typeCode != null" >
+        TYPE_CODE,
+      </if>
+      <if test="isUse != null" >
+        IS_USE,
+      </if>
+      <if test="pid != null" >
+        PID,
+      </if>
+      <if test="seq != null" >
+        SEQ,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="dicId != null" >
+        #{dicId,jdbcType=VARCHAR},
+      </if>
+      <if test="text != null" >
+        #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null" >
+        #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        #{isUse,jdbcType=CHAR},
+      </if>
+      <if test="pid != null" >
+        #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        #{seq,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <!-- 更新SYS_DICTIONARY  用的该方法 -->
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.sys.dictionary.entity.SysDictionary" >
+    update SYS_DICTIONARY
+    <set >
+      <if test="text != null" >
+        TEXT = #{text,jdbcType=VARCHAR},
+      </if>
+      <if test="value != null" >
+        VALUE = #{value,jdbcType=VARCHAR},
+      </if>
+      <if test="typeId != null" >
+        TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null" >
+        TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        IS_USE = #{isUse,jdbcType=CHAR},
+      </if>
+      <if test="pid != null" >
+        PID = #{pid,jdbcType=VARCHAR},
+      </if>
+      <if test="seq != null" >
+        SEQ = #{seq,jdbcType=INTEGER},
+      </if>
+    </set>
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.sys.dictionary.entity.SysDictionary" >
+    update SYS_DICTIONARY
+    set TEXT = #{text,jdbcType=VARCHAR},
+      VALUE = #{value,jdbcType=VARCHAR},
+      TYPE_ID = #{typeId,jdbcType=VARCHAR},
+      TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      IS_USE = #{isUse,jdbcType=CHAR},
+      PID = #{pid,jdbcType=VARCHAR},
+      SEQ = #{seq,jdbcType=INTEGER}
+    where DIC_ID = #{dicId,jdbcType=VARCHAR}
+  </update>
+  
+  <!-- 关联 语句 -->
+  <select id="queryDictItem" resultType="map" parameterType="map" >
+		SELECT
+			DIC_ID,
+			TEXT,
+		    VALUE,
+			SYS_DICTIONARY.IS_USE,
+			PID,
+			TYPE_ID,
+			SYS_DICTIONARY_TYPE.TYPE_CODE,
+		    SYS_DICTIONARY_TYPE.TYPE_NAME,
+		    SYS_DICTIONARY_TYPE.IS_USE TYPE_IS_USE,
+		    SEQ
+		FROM
+			SYS_DICTIONARY
+		INNER JOIN SYS_DICTIONARY_TYPE 
+		ON SYS_DICTIONARY.TYPE_ID = SYS_DICTIONARY_TYPE.DIC_TYPE_ID
+		WHERE
+			1 = 1
+    	<if test="TYPE_CODE != null" >
+    		AND SYS_DICTIONARY_TYPE.TYPE_CODE = #{TYPE_CODE}
+    	</if>   
+    	ORDER BY SYS_DICTIONARY.SEQ
+  	</select>
+  	<!-- 批量删除 SYS_DICTIONARY-->
+  <delete id="rightBatchDelete" parameterType="map" >
+    DELETE FROM SYS_DICTIONARY
+    WHERE 1=2
+    <if test="DIC_IDS != null" >
+     OR   DIC_ID IN (${DIC_IDS})
+    </if>
+  </delete>
+  <!-- 递归删除 -->
+  <delete id="rightRecursiveDelete" parameterType="map" >
+	    DELETE SYS_DICTIONARY FROM(
+			SELECT DIC_ID FROM SYS_DICTIONARY 
+			WHERE FIND_IN_SET(DIC_ID, SYS_DIC_QUERY_CHILDREN(#{DIC_IDS}))
+		) T1
+		INNER JOIN SYS_DICTIONARY
+		WHERE SYS_DICTIONARY.DIC_ID = T1.DIC_ID
+	</delete>
+	<!-- 批量删除 -->
+  <delete id="deleteItems" parameterType="map" >
+    DELETE FROM SYS_DICTIONARY
+	WHERE  1=2 
+	<if test="DIC_IDS != null" >
+	OR TYPE_ID IN (${DIC_IDS})
+  	</if>
+  </delete>
+  <delete id="batchDelete" parameterType="map" >
+    DELETE FROM SYS_DICTIONARY_TYPE
+    WHERE 1=2
+    <if test="DIC_IDS != null" >
+     OR   DIC_TYPE_ID IN (${DIC_IDS})
+    </if>
+  </delete>
+  
+  <select id="queryDictItemByDefine" resultType="map" parameterType="map">
+		SELECT ${valueColName} AS VALUE,${textColName} AS TEXT
+		FROM ${tableName}
+		<if test="condition != null and condition !=''">
+			WHERE 1=1 AND ${condition}
+		</if>
+	</select>
+  <select id="queryTreeNodesByDictType" resultMap="DictTreeNodeResultMap" parameterType="map">
+		SELECT * FROM(
+			<if test="PID == null">
+			(
+				SELECT 
+					'root' ID,
+					'-1'	PID,
+					 DIC_TYPE_ID CODE,
+					TYPE_NAME NAME,
+					DIC_TYPE_ID TYPE,
+					'FIcon01' ICON_SKIN,
+					TYPE_CODE EXTEND_ATTR,
+					'1' IS_PARENT,
+					-1 SEQ
+				FROM SYS_DICTIONARY_TYPE
+				WHERE DIC_TYPE_ID = #{TYPE_ID} 
+			)
+			UNION ALL
+			</if>
+			(
+				SELECT
+					DIC_ID ID,
+					IF(PID IS NULL OR PID='','root',PID) PID,
+					VALUE CODE,
+					TEXT NAME,
+					TYPE_ID TYPE,
+					'' ICON_SKIN,
+					TYPE_CODE EXTEND_ATTR,
+					'1' IS_PARENT,
+					SEQ
+					<!-- APP_ID EXTEND_ATTR -->
+				FROM
+					SYS_DICTIONARY
+				WHERE TYPE_ID = #{TYPE_ID}
+			)
+		) T
+		WHERE 1=1 
+		<if test="PID != null and PID !=''">
+			AND T.PID = #{PID}
+		</if>
+		ORDER BY T.SEQ
+	</select>
+	<select id="rightQueryPageCount" resultType="int" parameterType="map" >
+		SELECT count(1)
+		
+		FROM(SELECT
+			DIC_ID,
+			TEXT,
+		    VALUE,
+			SYS_DICTIONARY.IS_USE,
+			PID,
+			TYPE_ID,
+			SYS_DICTIONARY_TYPE.TYPE_CODE,
+		  SYS_DICTIONARY_TYPE.TYPE_NAME,
+		  SYS_DICTIONARY_TYPE.IS_USE TYPE_IS_USE,
+		  SEQ
+		FROM
+			SYS_DICTIONARY
+		INNER JOIN SYS_DICTIONARY_TYPE 
+		ON SYS_DICTIONARY.TYPE_ID = SYS_DICTIONARY_TYPE.DIC_TYPE_ID
+		WHERE
+			1 = 1
+    	<if test="DIC_TYPE_ID != null" >
+    		AND TYPE_ID = #{DIC_TYPE_ID}
+    	</if>
+    	<if test="TYPE_CODE != null" >
+    		AND SYS_DICTIONARY_TYPE.TYPE_CODE = #{TYPE_CODE}
+    	</if>
+    	ORDER BY SYS_DICTIONARY.SEQ 
+      )
+  	</select>
+  <select id="queryPageRight" resultType="map" parameterType="map" >
+		SELECT
+			DIC_ID,
+			TEXT,
+		    VALUE,
+			SYS_DICTIONARY.IS_USE,
+			PID,
+			TYPE_ID,
+			SYS_DICTIONARY_TYPE.TYPE_CODE,
+		  SYS_DICTIONARY_TYPE.TYPE_NAME,
+		  SYS_DICTIONARY_TYPE.IS_USE TYPE_IS_USE,
+		  SEQ
+		FROM
+			SYS_DICTIONARY
+		INNER JOIN SYS_DICTIONARY_TYPE 
+		ON SYS_DICTIONARY.TYPE_ID = SYS_DICTIONARY_TYPE.DIC_TYPE_ID
+		WHERE
+			1 = 1
+    	<if test="t.DIC_TYPE_ID != null" >
+    		AND TYPE_ID = #{t.DIC_TYPE_ID}
+    	</if>
+    	<if test="t.TYPE_CODE != null" >
+    		AND SYS_DICTIONARY_TYPE.TYPE_CODE = #{t.TYPE_CODE}
+    	</if>
+    	ORDER BY SYS_DICTIONARY.SEQ 
+  	</select>
+  	<select id="rightQuery" resultType="map" parameterType="map" >
+    	SELECT
+			DIC_ID,
+			TEXT,
+		    VALUE,
+			SYS_DICTIONARY.IS_USE,
+			PID,
+			TYPE_ID,
+			SYS_DICTIONARY_TYPE.TYPE_CODE,
+		  SYS_DICTIONARY_TYPE.TYPE_NAME,
+		  SYS_DICTIONARY_TYPE.IS_USE TYPE_IS_USE,
+		  SEQ
+		FROM
+			SYS_DICTIONARY
+		INNER JOIN SYS_DICTIONARY_TYPE 
+		ON SYS_DICTIONARY.TYPE_ID = SYS_DICTIONARY_TYPE.DIC_TYPE_ID
+		WHERE
+			1 = 1
+		<if test="typeId != null" >
+    		AND TYPE_ID = #{typeId}
+    	</if>
+    	<if test="value != null" >
+      	AND  VALUE = #{value}
+    	</if>
+    	<if test="notId != null" >
+      	AND  DIC_ID != #{notId}
+    	</if>
+    	ORDER BY SYS_DICTIONARY.SEQ
+	</select>
+	
+	 <select id="rightGetByMap" resultType="map" parameterType="string" >
+		SELECT
+			DIC_ID,TEXT,VALUE,TYPE_ID,TYPE_CODE,IS_USE,PID,SEQ
+    	FROM SYS_DICTIONARY
+    	WHERE 1=1
+    	AND DIC_ID = #{DIC_ID}
+	</select>
+	
+</mapper>

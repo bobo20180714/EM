@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="war" name="EM_WEB:war">
+    <output-path>$PROJECT_DIR$/EM_WEB/target</output-path>
+    <root id="archive" name="EM_WEB-4.0-SNAPSHOT.war">
+      <element id="artifact" artifact-name="EM_WEB:war exploded" />
+    </root>
+  </artifact>
+</component>

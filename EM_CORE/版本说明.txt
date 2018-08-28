@@ -1,0 +1,193 @@
+这个是把易捷变为springboot，并且包名规范的
+版本V1.00 
+【版本支持功能】
+1、【公共业务模块】组织机构、角色权限、字典管理
+2、【后台】使用jdk1.7、使用spring+springMVC+mybatis、数据库使用mysql5.6
+3、【后台】支持webservice
+4、【前台】支持ZTree、layer弹窗、分页、右键菜单【写法可自行查看项目源码】
+
+版本V1.2
+1、首次引入bootstrap在common_header中，支持bootstrap写法，建议尽量使用bootstrap，
+可以做一次页面保证各种设备都能适应，学习地址： http://v3.bootcss.com/css/
+2、支持缓存注解 @Cacheable 写法@Cacheable(value = "dictCache",key="#typeCode")见SysDictServiceImpl
+说明：缓存类似一个Map（如果想创建新的缓存请在ehcache.xml中参照写法自己添加），其中value代表哪个Map key等同于Map中的key，而值就是被注解的方法的执行结果。
+作用：对于加了缓存注解的方法，spring会优先去看缓存中是否有该方法该参数的执行结果，如果有就直接取缓存中的结果，不再执行该方法。
+3、支持自定义标签，创建字典标签写法，自定义标签参考[<sys:dictSelect cls="formselect" name="CARD_TYPE" typeCode="certificate" defaultValue="${record.CARD_TYPE }" />]
+4、完善【机构人员-人员修改页】的【可管理机构】功能，并为【机构人员】、【角色管理-关联人员】补充相应机构查看权限
+5、增加程序定时器注解支持，可以根据cron表达式的时间设定，执行无参空方法，写法示例见TestSchedule.java，对定时器方法暂时未配置事务。
+6、增加首页订制功能。在首页右键可以使用,后台的首页模块管理可以配置首页模块，角色管理页面列表中的首页分配。
+
+版本V1.3
+1、加入radioButton标签写法如下：
+<sys:radioButton name="sex" typeCode="SEX" defaultValue="${basicInfo.sex }" />
+2、加入按钮权限标签，写法如下：
+<bgt:hasUrlPerm link="omEmployee/update.do">
+	<div>tttttttttttttttttest</div>
+</bgt:hasUrlPerm>
+
+2015年12月24日
+1、修正机构管理树初始时不显示第一级机构下的人员的BUG
+2、增加上传下载功能，上传的文件会存在配置文件中的路径中，文件信息会存放在SYS_FILE中,示例请参考sys_file_forDemo.jsp(通过superadmin访问选择上传示例)
+3、已提交美工改造bootstrap，过两天会大改页面样式，并制作写法示例
+
+2015年12月30日
+1、加入sysUtils/refreshMappers.do功能，访问该类可以实时刷新所有mybatis的mapper xml文件 见【SysUtilsController.jsva】
+2、支持机构管理树结构调整--通过对树中元素的拖动和复制（点击CTRL 再拖动）
+
+2016年1月5日
+1、加入echarts 统计图表（柱状图、饼状图等）支持
+可参考示例写法，登录后在浏览器中输入：
+		http://localhost:8080/platform/echartsDemo/forExample.do	官方示例
+		http://localhost:8080/platform/echartsDemo/forAjaxExample.do	后台获取数据
+		java文件：EchartsDemoController.java
+		jsp文件：frontEnd_echarts_forExample.jsp		frontEnd_echarts_forAjaxExample.jsp
+文档地址:http://echarts.baidu.com/doc/doc.html#Option	http://echarts.baidu.com/doc/doc.html#实例方法
+
+2016年1月6日
+1、修正第四级菜单无法正确打开的BUG
+2、在浏览器普遍放弃NPAPI（网景插件应用程序编程接口）的大环境下，暂时集成了一个微型页面打印插件，示例见PrintPageDemoController.java    jqprint插件
+
+2016年1月11日
+1、增加druid监控配置，支持druid监控，访问地址 http://lcalhost:8080/platform/durid 账号superadmin  密码1
+2、增加tomcat监控软件probe的使用方法介绍，详情请参考【doc】文件夹下的PSIprobe【Tomcat监控工具】.7z。doc文件夹svn地址：https://60.208.36.228:8088/svn/platform/trunk/doc
+
+2016年1月13日
+1、增加服务端推送框架（基于comet的pushlet)
+
+2016年1月15日
+1、集成jasper报表，jasper报表需要配置jrxml文件，并生成jasper文件，然后通过该以该jasper文件为模板，在java中通过代码使用。
+写法见ReportDemoController.java:		http://localhost:8080/platform/reportDemo/forDemo.do
+2、jrxml的编写，以及jrxml编译生成jasper这两步，可以通过一个图形化操作工具实现——iReport
+
+2016年1月27日
+1、修正文件上传IE报406的BUG 文件位置：SysFileController.java
+
+2016年1月28日
+大量整改页面中。。。
+1、翻改插件的前后台，实现可配置的点击标题排序、每页显示数量、全局检索
+2、首次实现了新的弹窗控件使用方式位置:ac_role_forQueryPage.jsp点击新增ac_role_forUpdate.jsp
+时间关系，现阶段仍保持大量使用layer。
+其他过去完成的调整：
+1、完成页面样式替换预案，可修改config.properties中的layout=layout7 体验一下
+2、首页框架布局整体改为响应式，扁平化，摒弃iframe刷新，完全使用jquery的局部刷新替代。
+3、修改登录页面
+4、结合现有风格，更改表单验证和提交写法
+5、更换右键菜单插件
+6、汉化bootstrap日期控件
+7、更换浮动层
+8、更换alert工具
+9、新增部分共通js工具方法
+10、开发新控件的标签
+
+2016年2月17日
+【可管理机构】功能，存在设计上的问题，现状复杂度较高，暂时屏蔽掉相关代码，如有这方面需求可联系平台及共性技术部。
+
+2016年2月18日14:42:00
+1、改善超级管理员的菜单功能权限，不必配置超管会自动拥有所有功能权限
+2、改善了pushlet示例
+
+2016年2月29日13:53:00 -- 于庆
+1、增加wabacus框架开发报表示例,菜单配置url:http://localhost:8080/platform/wabacusDemo/forDemo.do
+
+2016年3月2日9:53:00 -- 于庆
+1.增加Tab页签插件，写法见url:http://localhost:8080/platform/TabDemo/forTab.do
+
+-------------------------版本分界线，以上为V2.0、以下为V3.0内容---------------------------------------
+
+2016年3月7日16:41:32 --刘宇祥
+1、对目录进行调整，每个模块新建mapper目录，存放所有的mapper文件
+
+2016年3月15日13:41:58 --刘宇祥
+修正菜单编辑页面选择是否叶子菜单没反应的BUG
+
+2016年4月5日 -- 刘宇祥
+1.增加对oracle数据库的支持
+
+2016年4月6日9:53:00 -- 于庆
+1.增加对sqlserver数据库的支持
+
+2016年4月8日-- 刘宇祥
+1、修正部分浏览器上传报302错误的 BUG
+
+2016年4月11日-- 刘宇祥
+1、修正部分浏览器上传时session丢失的问题
+
+2016年4月14日15:51:30--刘宇祥
+1、修正tab签突出一块的问题和一直以来的pagecontent样式滚动条的问题
+
+2016年4月15日--于庆
+1.增加jsp标签，简化页面书写 
+	<sys:treeStruct />      zTree树标签,具体写法例如：<sys:treeStruct treeCaption="应用功能树" treeId="applicationTree" />
+	<form:formTitle />      表单头部标签，具体写法例如：<form:formTitle title="应用详情" />
+	<form:formSaveButton /> 表单确认保存按钮，没有option,如：<form:formSaveButton />
+	<table:tableTitle />    dataTable标题，具体写法例如：<table:tableTitle title="模块列表"/>
+	<table:toolbar />       dataTable增加删除按钮栏，具体写法如：<table:toolbar href="acHomeModule/forUpdate.do?id=create" target="#ajax_lg" delclick="deleteModule()"/>
+	<sys:pageNavigation />  页面导航条，目前只支持三级，可以扩展，写法如：<sys:pageNavigation firstLevel="首页" secLevel="其他管理" thdLevel="首页模块管理"/>
+2.修改页面元素、变量的id重复问题
+	树形结构,js文件的变量如树中选中节点、右键方法名、setting命名等不允许重复。
+	dataTable在js文件中命名不能重复，获取dataTable时应采用各自页面上表格的id(唯一)。
+
+2016年5月4日--于庆
+1.登录页面增加拖动滑块验证功能、记住密码功能。
+
+2016年5月11日09:50:00
+bootstrap对部分浏览器支持不太好，毕竟是HTML5，如果非得支持要做一些额外工作，参考：
+http://blog.csdn.net/chenhongwu666/article/details/41513901
+2016年5月30日  刘宇祥追加
+本框架不支持IE10以下浏览器
+
+
+2016年5月20日10:53:46
+1、已经引入activiti，并做了部分示例，现还未正式发布
+2、第二套样式开发完成
+
+2016年5月23日
+给两套样式的左侧二级菜单增加点击事件
+
+2016年5月30日
+1、修正人员绑定角色页面上出现的问题——在common_header_old.jsp中引入了bootbox.min.js
+2、新版的om模块存在保存完数据，报JS错误的问题，更新om模块下四个jsp：
+om_employee_forCheckTree.jsp
+om_employee_forUpdate.jsp
+om_organization_forUpdate.jsp
+om_position_forUpdate.jsp
+3、新增LoggerUtils工具类，所有log的打印请使用该类的静态方法
+
+2016年5月31日
+在main.jsp中加入了一段js，提供modal弹窗的js方式的写法，同时在每次关闭modal的时候清空modal中的内容，这样可以防止下次调用的时候不再重复加载
+
+2016年6月6日
+1.修正右键点击菜单管理树或者应用功能树时，报'left'属性为空的错误。
+2.修正机构人员->右键维护人员角色选项点击保存时弹出框不关闭的问题。
+
+2016年6月17日--于庆
+1.将登录页面拖动滑块验证功能改为验证码登录，方法见LoginController中validateImg方法：
+RandomGraphic.createInstance(4).drawNumber(RandomGraphic.GRAPHIC_PNG,output)
+其中drawNumber()提供数字验证码，drawAlpha()提供字母验证码，而且验证码位数和验证码图片格式可以修改。
+2.修改列表页面复选框id重复问题,注意三个需要修改的地方：
+	表头中全选按钮的id不能重复;
+	点击全选按钮时要加上类名以指定具体的div元素，如$(".formDesignChecker :checkbox");
+	选中行添加样式类时的样式类名称不能重复，框架中默认类取名为"checkSpan"+java类的名称，$(".checkSpanFormDesign").addClass("checked");
+
+2016年6月20日  刘宇祥
+1、修正弹窗关闭时不清空上一次modal缓存的bug	
+
+2016年6月23日 刘宇祥
+1、引入了uploadifive文件上传插件来取代uploadify，写法参考sys_file_forDemo.jsp
+ps：uploadifive为uploadify的收费版，基于html5 摒弃flash，并且上传文件不会丢失session
+
+2016年6月27日--于庆
+1.工作流模块中加入请假表单的示例页面，对应业务表WF_LEAVE,对应流程图LeaveBill.bpmn
+2.工作流增加会签任务示例,流程图对应dispatch.bpmn
+
+
+2016年7月11日
+修正了项目名更改后无法保存密码的问题 
+
+2018年1月23日
+框架升级：
+1、精简了无用的js、css（f），并对功能进行了整合
+2、工具包升级，增加了json（f）、xml等对象的转换（f）。增加了excel解析(f)
+3、集成了restful接口，并对webservice接口进行了规范
+4、完善了动态数据源切换，可以进行两个数据源的配置
+

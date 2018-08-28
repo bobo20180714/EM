@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgOrganizationMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.organization.entity.OrgOrganization" >
+    <id column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="ORG_CODE" property="orgCode" jdbcType="VARCHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="ORG_LEVEL" property="orgLevel" jdbcType="DECIMAL" />
+    <result column="ORG_DEGREE" property="orgDegree" jdbcType="VARCHAR" />
+    <result column="PARENT_ORG_ID" property="parentOrgId" jdbcType="VARCHAR" />
+    <result column="ORG_SEQ" property="orgSeq" jdbcType="VARCHAR" />
+    <result column="ORG_TYPE" property="orgType" jdbcType="VARCHAR" />
+    <result column="ORG_ADDR" property="orgAddr" jdbcType="VARCHAR" />
+    <result column="ZIP_CODE" property="zipCode" jdbcType="VARCHAR" />
+    <result column="MANA_POSITION" property="manaPosition" jdbcType="VARCHAR" />
+    <result column="MANAGER_ID" property="managerId" jdbcType="VARCHAR" />
+    <result column="ORG_MANAGER" property="orgManager" jdbcType="VARCHAR" />
+    <result column="LINK_MAN" property="linkMan" jdbcType="VARCHAR" />
+    <result column="LINK_TEL" property="linkTel" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+    <result column="WEB_URL" property="webUrl" jdbcType="VARCHAR" />
+    <result column="START_DATE" property="startDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="AREA" property="area" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="VARCHAR" />
+    <result column="UPDATOR" property="updator" jdbcType="VARCHAR" />
+    <result column="SORT_NO" property="sortNo" jdbcType="INTEGER" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+    <result column="PARENT_ORG_NAME" property="parentOrgName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ZTreeNodeResultMap" type="com.em.common.zTree.ZTreeNode" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+    <result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+    <result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+    <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+   ORG_ID, ORG_CODE, ORG_NAME, ORG_LEVEL, ORG_DEGREE, PARENT_ORG_ID, ORG_SEQ, ORG_TYPE, 
+    ORG_ADDR, ZIP_CODE, MANA_POSITION, MANAGER_ID, ORG_MANAGER, LINK_MAN, LINK_TEL, EMAIL, 
+    WEB_URL, START_DATE, END_DATE, STATUS, AREA, CREATE_TIME, LAST_UPDATE_TIME, UPDATOR, 
+    SORT_NO, IS_LEAF, REMARK,
+    (SELECT ORG_NAME FROM ORG_ORGANIZATION P_ORG WHERE P_ORG.ORG_ID=ORG_ORGANIZATION.PARENT_ORG_ID ) PARENT_ORG_NAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORG_ORGANIZATION
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ORG_ORGANIZATION
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.organization.entity.OrgOrganization" >
+    insert into ORG_ORGANIZATION (ORG_ID, ORG_CODE, ORG_NAME, 
+      ORG_LEVEL, ORG_DEGREE, PARENT_ORG_ID, 
+      ORG_SEQ, ORG_TYPE, ORG_ADDR, 
+      ZIP_CODE, MANA_POSITION, MANAGER_ID, 
+      ORG_MANAGER, LINK_MAN, LINK_TEL, 
+      EMAIL, WEB_URL, START_DATE, 
+      END_DATE, STATUS, AREA, 
+      CREATE_TIME, LAST_UPDATE_TIME, UPDATOR, 
+      SORT_NO, IS_LEAF, REMARK
+      )
+    values (#{orgId,jdbcType=VARCHAR}, #{orgCode,jdbcType=VARCHAR}, #{orgName,jdbcType=VARCHAR}, 
+      #{orgLevel,jdbcType=DECIMAL}, #{orgDegree,jdbcType=VARCHAR}, #{parentOrgId,jdbcType=VARCHAR}, 
+      #{orgSeq,jdbcType=VARCHAR}, #{orgType,jdbcType=VARCHAR}, #{orgAddr,jdbcType=VARCHAR}, 
+      #{zipCode,jdbcType=VARCHAR}, #{manaPosition,jdbcType=VARCHAR}, #{managerId,jdbcType=VARCHAR}, 
+      #{orgManager,jdbcType=VARCHAR}, #{linkMan,jdbcType=VARCHAR}, #{linkTel,jdbcType=VARCHAR}, 
+      #{email,jdbcType=VARCHAR}, #{webUrl,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR}, 
+      #{endDate,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{area,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=VARCHAR}, #{updator,jdbcType=VARCHAR}, 
+      #{sortNo,jdbcType=INTEGER}, #{isLeaf,jdbcType=CHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.organization.entity.OrgOrganization" >
+    insert into ORG_ORGANIZATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="orgCode != null" >
+        ORG_CODE,
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME,
+      </if>
+      <if test="orgLevel != null" >
+        ORG_LEVEL,
+      </if>
+      <if test="orgDegree != null" >
+        ORG_DEGREE,
+      </if>
+      <if test="parentOrgId != null" >
+        PARENT_ORG_ID,
+      </if>
+      <if test="orgSeq != null" >
+        ORG_SEQ,
+      </if>
+      <if test="orgType != null" >
+        ORG_TYPE,
+      </if>
+      <if test="orgAddr != null" >
+        ORG_ADDR,
+      </if>
+      <if test="zipCode != null" >
+        ZIP_CODE,
+      </if>
+      <if test="manaPosition != null" >
+        MANA_POSITION,
+      </if>
+      <if test="managerId != null" >
+        MANAGER_ID,
+      </if>
+      <if test="orgManager != null" >
+        ORG_MANAGER,
+      </if>
+      <if test="linkMan != null" >
+        LINK_MAN,
+      </if>
+      <if test="linkTel != null" >
+        LINK_TEL,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+      <if test="webUrl != null" >
+        WEB_URL,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="area != null" >
+        AREA,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="updator != null" >
+        UPDATOR,
+      </if>
+      <if test="sortNo != null" >
+        SORT_NO,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgCode != null" >
+        #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLevel != null" >
+        #{orgLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="orgDegree != null" >
+        #{orgDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="parentOrgId != null" >
+        #{parentOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSeq != null" >
+        #{orgSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="orgType != null" >
+        #{orgType,jdbcType=VARCHAR},
+      </if>
+      <if test="orgAddr != null" >
+        #{orgAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="manaPosition != null" >
+        #{manaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgManager != null" >
+        #{orgManager,jdbcType=VARCHAR},
+      </if>
+      <if test="linkMan != null" >
+        #{linkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="linkTel != null" >
+        #{linkTel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        #{webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="sortNo != null" >
+        #{sortNo,jdbcType=INTEGER},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.org.organization.entity.OrgOrganization" >
+    update ORG_ORGANIZATION
+    <set >
+      <if test="orgCode != null" >
+        ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      </if>
+      <if test="orgName != null" >
+        ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      </if>
+      <if test="orgLevel != null" >
+        ORG_LEVEL = #{orgLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="orgDegree != null" >
+        ORG_DEGREE = #{orgDegree,jdbcType=VARCHAR},
+      </if>
+      <if test="parentOrgId != null" >
+        PARENT_ORG_ID = #{parentOrgId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgSeq != null" >
+        ORG_SEQ = #{orgSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="orgType != null" >
+        ORG_TYPE = #{orgType,jdbcType=VARCHAR},
+      </if>
+      <if test="orgAddr != null" >
+        ORG_ADDR = #{orgAddr,jdbcType=VARCHAR},
+      </if>
+      <if test="zipCode != null" >
+        ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="manaPosition != null" >
+        MANA_POSITION = #{manaPosition,jdbcType=VARCHAR},
+      </if>
+      <if test="managerId != null" >
+        MANAGER_ID = #{managerId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgManager != null" >
+        ORG_MANAGER = #{orgManager,jdbcType=VARCHAR},
+      </if>
+      <if test="linkMan != null" >
+        LINK_MAN = #{linkMan,jdbcType=VARCHAR},
+      </if>
+      <if test="linkTel != null" >
+        LINK_TEL = #{linkTel,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+      <if test="webUrl != null" >
+        WEB_URL = #{webUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="area != null" >
+        AREA = #{area,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        UPDATOR = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="sortNo != null" >
+        SORT_NO = #{sortNo,jdbcType=INTEGER},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.org.organization.entity.OrgOrganization" >
+    update ORG_ORGANIZATION
+    set ORG_CODE = #{orgCode,jdbcType=VARCHAR},
+      ORG_NAME = #{orgName,jdbcType=VARCHAR},
+      ORG_LEVEL = #{orgLevel,jdbcType=DECIMAL},
+      ORG_DEGREE = #{orgDegree,jdbcType=VARCHAR},
+      PARENT_ORG_ID = #{parentOrgId,jdbcType=VARCHAR},
+      ORG_SEQ = #{orgSeq,jdbcType=VARCHAR},
+      ORG_TYPE = #{orgType,jdbcType=VARCHAR},
+      ORG_ADDR = #{orgAddr,jdbcType=VARCHAR},
+      ZIP_CODE = #{zipCode,jdbcType=VARCHAR},
+      MANA_POSITION = #{manaPosition,jdbcType=VARCHAR},
+      MANAGER_ID = #{managerId,jdbcType=VARCHAR},
+      ORG_MANAGER = #{orgManager,jdbcType=VARCHAR},
+      LINK_MAN = #{linkMan,jdbcType=VARCHAR},
+      LINK_TEL = #{linkTel,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      WEB_URL = #{webUrl,jdbcType=VARCHAR},
+      START_DATE = #{startDate,jdbcType=VARCHAR},
+      END_DATE = #{endDate,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      AREA = #{area,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+      UPDATOR = #{updator,jdbcType=VARCHAR},
+      SORT_NO = #{sortNo,jdbcType=INTEGER},
+      IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </update>
+  <select id="getChildrenStringByOrgId" resultType="string" parameterType="string" >
+    SELECT ORG_ORGANIZATION_QUERY_CHILDREN(#{_parameter})
+  </select>
+   <select id="query" resultType="map" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ORG_ORGANIZATION
+    WHERE ORG_ID !='root'
+    <if test="ORG_CODE != null" >
+		AND ORG_CODE = #{ORG_CODE}
+	</if>
+	<if test="NOT_ORG_ID != null" >
+		AND ORG_ID != #{NOT_ORG_ID}
+	</if>
+  </select>
+  <!-- 暂时不支持sqlserver和oracle start -->
+  <select id="queryOnlyOrgTreeNodes" resultMap="ZTreeNodeResultMap" parameterType="map" >
+    SELECT * FROM
+		(
+				SELECT
+					ORG_ORGANIZATION.ORG_ID ID,
+					PARENT_ORG_ID PID,
+					SORT_NO CODE,
+					ORG_NAME NAME,
+					'ORG' TYPE,
+					'OpIcon02' ICON_SKIN,
+					'1' IS_PARENT,
+					ORG_LEVEL EXTEND_ATTR,
+					'' EXTEND_ATTR_1
+					FROM 
+					 ORG_ORGANIZATION
+					WHERE ORG_ID!='root'
+					<if test="orgIdChildrenList!=null">
+						AND FIND_IN_SET(ORG_ID, #{orgIdChildrenList})>0
+					</if>
+					<if test="orgLevel!=null and orgLevel!=''">
+						AND ORG_LEVEL <![CDATA[<=]]> #{orgLevel,jdbcType=INTEGER}
+					</if>
+
+		) T
+	WHERE
+		1=1
+	ORDER BY T.TYPE, T.CODE
+  </select>
+  <select id="queryChildrenTreeNodes" resultMap="ZTreeNodeResultMap" parameterType="map" >
+  	<!-- 构建说明
+  		因为：人员可以直接挂在机构下，也可以直接挂在岗位下，岗位如果没有父岗位则必须挂在机构下，如果有父岗位则不能挂在机构下
+		所以：机构的父子结构通过 机构主表的id、父id
+			岗位的父子结构通过 岗位主表自身id、父id【如果父岗位字段是空的则是挂在机构下的用机构关联、如果父岗位字段不是空的则是挂在父岗位下的】
+			人员所属父节点通过 人员机构中间表、人员岗位中间表
+  	 -->
+    SELECT * FROM
+		(
+			(
+				SELECT
+					ORG_ID ID,
+					PARENT_ORG_ID PID,
+					SORT_NO CODE,
+					ORG_NAME NAME,
+					'ORG' TYPE,
+					'OpIcon02' ICON_SKIN,
+					'1' IS_PARENT,
+					ORG_ID EXTEND_ATTR,
+					'' EXTEND_ATTR_1
+				FROM
+					ORG_ORGANIZATION
+				WHERE
+					1 = 1
+					<if test="pId != null" >
+						AND PARENT_ORG_ID = #{pId}
+					</if><!-- 
+					<if test="orgIdList != null" >
+						AND FIND_IN_SET(ORG_ID,#{orgIdList})>0
+					</if> -->
+			)
+			<!-- <if test="init == null" > -->
+			UNION ALL
+				(
+					SELECT
+						POSITION_ID ID,
+						ORG_ID PID,
+						POSI_CODE CODE,
+						POSI_NAME NAME,
+						'POSI' TYPE,
+						'OpIcon01' ICON_SKIN,
+						'1' IS_PARENT,
+						ORG_ID EXTEND_ATTR,
+						POSITION_ID EXTEND_ATTR_1
+					FROM
+						ORG_POSITION
+					WHERE
+							ifnull(PARENT_POSI_ID,'') = ''
+							<if test="pId != null" >
+								AND ORG_ID = #{pId}
+							</if><!-- 
+							<if test="orgIdList != null" >
+								AND FIND_IN_SET(ORG_ID,#{orgIdList})>0
+							</if> -->
+				)
+			UNION ALL
+				(
+					SELECT
+						POSITION_ID ID,
+						PARENT_POSI_ID PID,
+						POSI_CODE CODE,
+						POSI_NAME NAME,
+						'POSI' TYPE,
+						'OpIcon01' ICON_SKIN,
+						'1' IS_PARENT,
+						ORG_ID EXTEND_ATTR,
+						POSITION_ID EXTEND_ATTR_1
+					FROM
+						ORG_POSITION
+					WHERE
+							ifnull(PARENT_POSI_ID,'') != ''
+							<if test="pId != null" >
+								AND PARENT_POSI_ID = #{pId}
+							</if><!-- 
+							<if test="orgIdList != null" >
+								AND FIND_IN_SET(ORG_ID,#{orgIdList})>0
+							</if> -->
+				)
+			UNION ALL
+				(
+					SELECT
+						ORG_EMPLOYEE.EMP_ID ID,
+						ORG_EMPLOYEE_ORGANIZATION.ORG_ID PID,
+						EMP_CODE CODE,
+						EMP_NAME NAME,
+						'EMP' TYPE,
+						'OpIcon03' ICON_SKIN,
+						'0' IS_PARENT,
+						ORG_EMPLOYEE_ORGANIZATION.ORG_ID EXTEND_ATTR,
+						POSITION EXTEND_ATTR_1
+					FROM
+							ORG_EMPLOYEE,ORG_EMPLOYEE_ORGANIZATION
+					WHERE
+						ORG_EMPLOYEE.EMP_ID = ORG_EMPLOYEE_ORGANIZATION.EMP_ID
+						<if test="pId != null" >
+							AND ORG_EMPLOYEE_ORGANIZATION.ORG_ID = #{pId}
+						</if><!-- 
+						<if test="orgIdList != null" >
+							AND FIND_IN_SET(OM_EMP_ORG.ORG_ID,#{orgIdList})>0
+						</if> -->
+				)
+			UNION ALL
+				(
+					SELECT
+						ORG_EMPLOYEE.EMP_ID ID,
+						ORG_EMPLOYEE_POSITION.POSITION_ID PID,
+						EMP_CODE CODE,
+						EMP_NAME NAME,
+						'EMP' TYPE,
+						'OpIcon03' ICON_SKIN,
+						'0' IS_PARENT,
+						ORG_ID EXTEND_ATTR,
+						POSITION EXTEND_ATTR_1
+					FROM
+							ORG_EMPLOYEE,ORG_EMPLOYEE_POSITION
+					WHERE
+						ORG_EMPLOYEE.EMP_ID = ORG_EMPLOYEE_POSITION.EMP_ID
+						<if test="pId != null" >
+							AND ORG_EMPLOYEE_POSITION.POSITION_ID = #{pId}
+						</if><!-- 
+						<if test="orgIdList != null" >
+							AND FIND_IN_SET(ORG_ID,#{orgIdList})>0
+						</if> -->
+				)
+			<!-- </if> -->
+		) T
+	WHERE
+		1=1
+	<!-- <if test="pId == null and orgIdList == null" >
+		AND 1=-1
+		T.PID in ('-1','root')
+	</if>
+	<if test="pId != null" >
+		AND T.PID = #{pId}
+	</if> -->
+	ORDER BY T.TYPE, T.CODE
+  </select>
+   <select id="queryOnlyOrgChildrenTreeNodes" resultMap="ZTreeNodeResultMap" parameterType="map" >
+  	<!-- 构建说明
+  		因为：人员可以直接挂在机构下，也可以直接挂在岗位下，岗位如果没有父岗位则必须挂在机构下，如果有父岗位则不能挂在机构下
+		所以：机构的父子结构通过 机构主表的id、父id
+			岗位的父子结构通过 岗位主表自身id、父id【如果父岗位字段是空的则是挂在机构下的用机构关联、如果父岗位字段不是空的则是挂在父岗位下的】
+			人员所属父节点通过 人员机构中间表、人员岗位中间表
+  	 -->
+    SELECT * FROM
+		(
+				SELECT
+					ORG_ORGANIZATION.ORG_ID ID,
+					PARENT_ORG_ID PID,
+					SORT_NO CODE,
+					ORG_NAME NAME,
+					'ORG' TYPE,
+					'OpIcon02' ICON_SKIN,
+					'1' IS_PARENT,
+					ORG_ORGANIZATION.ORG_ID EXTEND_ATTR,
+					'' EXTEND_ATTR_1
+					FROM 
+				    (
+				    	SELECT T0.ORG_ID FROM ORG_ORGANIZATION T0 
+				    	WHERE FIND_IN_SET(T0.ORG_ID, ORG_ORGANIZATION_QUERY_CHILDREN(#{pId}))>0
+					) T1
+					INNER JOIN ORG_ORGANIZATION
+					ON T1.ORG_ID = ORG_ORGANIZATION.ORG_ID
+
+		) T
+	WHERE
+		1=1
+	ORDER BY T.TYPE, T.CODE
+  </select>
+</mapper>

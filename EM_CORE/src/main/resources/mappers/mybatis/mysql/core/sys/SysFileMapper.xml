@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.sys.mappers.SysFileMapper" >
+	<resultMap id="BaseResultMap" type="com.em.core.sys.file.entity.SysFile">
+		<id column="FILE_ID" property="fileId" jdbcType="VARCHAR" />
+		<result column="MAIN_ID" property="mainId" jdbcType="VARCHAR" />
+		<result column="FILE_NAME" property="fileName" jdbcType="VARCHAR" />
+		<result column="FILE_REAL_NAME" property="fileRealName" jdbcType="VARCHAR" />
+		<result column="FILE_TYPE" property="fileType" jdbcType="VARCHAR" />
+		<result column="FILE_LOCATION" property="fileLocation" jdbcType="VARCHAR" />
+		<result column="UPLOAD_TIME" property="uploadTime" jdbcType="VARCHAR" />
+		<result column="UPLOADER" property="uploader" jdbcType="VARCHAR" />
+		<result column="UPDATE_TIME" property="updateTime" jdbcType="VARCHAR" />
+		<result column="UPDATER" property="updater" jdbcType="VARCHAR" />
+		<result column="INVALID_TIME" property="invalidTime" jdbcType="VARCHAR" />
+		<result column="INVALIDER" property="invalider" jdbcType="VARCHAR" />
+		<result column="STATUS" property="status" jdbcType="VARCHAR" />
+		<result column="REMARK" property="remark" jdbcType="VARCHAR" />
+		<result column="SIZE" property="size" jdbcType="BIGINT" />
+	</resultMap>
+	<sql id="Base_Column_List" >
+    	FILE_ID,MAIN_ID,FILE_NAME,FILE_REAL_NAME,FILE_TYPE,FILE_LOCATION,UPLOAD_TIME,UPLOADER,UPDATE_TIME,UPDATER,INVALID_TIME,INVALIDER,STATUS,REMARK,SIZE
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+		SELECT <include refid="Base_Column_List" />
+    	FROM SYS_FILE
+    	WHERE FILE_ID = #{fileId, jdbcType=VARCHAR}
+	</select>
+	<select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    	SELECT <include refid="Base_Column_List" />
+    	FROM SYS_FILE
+    	WHERE 1=1
+    	<if test="fileId != null" >
+      		AND  FILE_ID = #{fileId, jdbcType=VARCHAR}
+    	</if>
+    	<!-- NOT_ID不知道什么意思 -->
+    	<if test="NOT_ID != null" >
+      		AND  FILE_ID != #{NOT_ID}
+    	</if>
+	</select>
+	<select id="query" resultMap="BaseResultMap" parameterType="com.em.core.sys.file.entity.SysFile">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM SYS_FILE
+		WHERE 1=1
+	</select>
+	<select id="queryPage" resultMap="BaseResultMap" parameterType="map" >
+    	SELECT FILE_ID,TYPE_NAME,TYPE_CODE
+    	FROM SYS_FILE
+    	WHERE 1=1
+    </select>
+    <insert id="insert" parameterType="com.em.core.sys.file.entity.SysFile" >
+    	INSERT INTO SYS_FILE (FILE_ID,MAIN_ID,FILE_NAME,FILE_REAL_NAME,FILE_TYPE,
+    		FILE_LOCATION,UPLOAD_TIME,UPLOADER,
+    		UPDATE_TIME,UPDATER,INVALID_TIME,INVALIDER,STATUS,REMARK,SIZE)
+    	VALUES (#{fileId, jdbcType=VARCHAR},#{mainId, jdbcType=VARCHAR},#{fileName, jdbcType=VARCHAR},
+    	#{fileRealName, jdbcType=VARCHAR},#{fileType, jdbcType=VARCHAR},#{fileLocation, jdbcType=VARCHAR},
+    	#{uploadTime, jdbcType=VARCHAR},#{uploader, jdbcType=VARCHAR},#{updateTime, jdbcType=VARCHAR},
+    	#{updater, jdbcType=VARCHAR},#{invalidTime, jdbcType=VARCHAR},#{invalider, jdbcType=VARCHAR},
+    	#{status, jdbcType=VARCHAR},#{remark, jdbcType=VARCHAR},#{size, jdbcType=BIGINT})
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.em.core.sys.file.entity.SysFile" >
+   		UPDATE SYS_FILE
+    <set>
+      <if test="fileId != null" >
+        FILE_ID = #{fileId, jdbcType=VARCHAR},
+      </if>
+      <if test="mainId != null" >
+        MAIN_ID = #{mainId, jdbcType=VARCHAR},
+      </if>
+      <if test="fileName != null" >
+        FILE_NAME = #{fileName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileRealName != null" >
+        FILE_REAL_NAME = #{fileRealName,jdbcType=VARCHAR},
+      </if>
+      <if test="fileType != null" >
+        FILE_TYPE = #{fileType,jdbcType=VARCHAR},
+      </if>
+      <if test="fileLocation != null" >
+        FILE_LOCATION = #{fileLocation,jdbcType=VARCHAR},
+      </if>
+      <if test="uploadTime != null" >
+        UPLOAD_TIME = #{uploadTime,jdbcType=VARCHAR},
+      </if>
+      <if test="uploader != null" >
+        UPLOADER = #{uploader,jdbcType=VARCHAR},
+      </if>
+      <if test="updateTime != null" >
+        UPDATE_TIME = #{updateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updater != null" >
+        UPDATER = #{updater,jdbcType=VARCHAR},
+      </if>
+      <if test="invalidTime != null" >
+        INVALID_TIME = #{invalidTime,jdbcType=VARCHAR},
+      </if>
+      <if test="invalider != null" >
+        INVALIDER = #{invalider,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="size != null" >
+        SIZE = #{size,jdbcType=BIGINT},
+      </if>
+    </set>
+    WHERE FILE_ID = #{FILE_ID}
+  </update>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+		DELETE FROM SYS_FILE
+    	WHERE FILE_ID = #{fileId, jdbcType=VARCHAR}
+	</delete>
+  
+  
+  
+  
+  <!-- 没用到  以下方法 -->
+  <select id="batchInsert" parameterType="java.util.List">
+  		INSERT INTO SYS_FILE (FILE_ID,MAIN_ID,FILE_NAME,FILE_REAL_NAME,FILE_TYPE,FILE_LOCATION,UPLOAD_TIME,UPLOADER,UPDATE_TIME,UPDATER,INVALID_TIME,INVALIDER,STATUS,REMARK,SIZE) VALUES
+    	<foreach collection="list" item="item" index="index" separator=",">
+    		(#{item.FILE_ID},#{item.MAIN_ID},#{item.FILE_NAME},#{item.FILE_REAL_NAME},#{item.FILE_TYPE},#{item.FILE_LOCATION},#{item.UPLOAD_TIME},#{item.UPLOADER},#{item.UPDATE_TIME},#{item.UPDATER},#{item.INVALID_TIME},#{item.INVALIDER},#{item.STATUS},#{item.REMARK},#{item.SIZE})
+		</foreach>
+  </select>
+  
+  <delete id="batchDelete" parameterType="map" >
+    DELETE FROM SYS_FILE
+    WHERE 1=2
+    <if test="FILE_IDS != null" >
+     OR   FILE_ID IN (${FILE_IDS})
+    </if>
+  </delete>
+
+
+</mapper>

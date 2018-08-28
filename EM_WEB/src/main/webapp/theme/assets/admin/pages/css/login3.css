@@ -1,0 +1,147 @@
+.login{
+	background:url(../../layout/img/lo-bac1.png) top center no-repeat;
+    font-family:"微软雅黑";
+}
+.loginBox{
+	margin:auto;
+	margin-top:80px;
+}
+@media only screen and (min-width: 768px) and (min-height: 769px) {
+	.loginBox{
+		margin-top:160px;
+	}
+}
+@media only screen and (max-width: 320px){
+	.loginBox{
+		margin-top:30px;
+	}
+}
+.mt-15{
+	margin-top:15px;
+}
+.login .content {
+  width: 360px;
+  margin: 0 auto;
+  margin-bottom: 0px;
+  padding: 30px;
+  padding-top: 20px;
+  padding-bottom: 15px;
+  -webkit-border-radius: 7px;
+  -moz-border-radius: 7px;
+  -ms-border-radius: 7px;
+  -o-border-radius: 7px;
+  border-radius: 7px;
+    box-shadow: none;
+    padding: 6px;
+    background-color: rgba(110,128,110,0.6);
+    border-radius: 0;
+}
+@media only screen and (max-width: 767px) {
+	.login .content{
+		width: auto;
+		margin: 0 10px;
+	}
+}
+.loginbox{
+    overflow: hidden;
+    background: #F7F7F7;
+}
+.loginContent{
+	padding:15px 30px 40px;
+}
+.logobox{
+	margin:40px auto 10px;
+}
+.logo{
+	height:46px;
+}
+.logoText{
+	height:32px;
+}
+.login h4{
+    color: #478fca!important;
+	border-bottom:solid 1px #d5e3ef;
+	line-height: 36px;
+}
+.login h4 i{
+	color: #69aa46!important;
+}
+.close {
+    display: inline-block;
+    margin-top: 5px;
+    margin-right: 0px;
+    width: 13px;
+    height: 13px;
+    background-repeat: no-repeat !important;
+    text-indent: -10000px;
+    outline: none;
+	background:url(../../layout/img/remove-icon-small.png) no-repeat !important;
+}
+.display-none, .display-hide {
+    display: none;
+}
+.login .alert-danger{
+	border-radius: 0;
+}
+.login .content .input-icon {
+    position: relative;
+}
+.login .input-icon .fa{
+	position: absolute;
+    left: 10px;
+    z-index: 100;
+    top: 8px;
+    font-size: 18px;
+    color: #999;
+}
+.login .content .input-icon .form-control{
+	padding-left: 30px;
+	border-radius: 0;
+}
+.yzmbox .yzm{
+	width:68%;
+}
+.yzmbox{
+	display: block;
+    overflow: hidden;
+}
+.yzmbox img{
+	margin-top: 2px;
+    cursor: pointer;
+}
+.btn-primary, .btn-primary:focus {
+    background-color: #428bca!important;
+    border-color: #428bca;
+    border-width: 4px;
+    font-size: 14px;
+     border-radius: 0;
+    padding: 4px 20px;
+}
+.subbox{
+	margin-top:20px;
+}
+.remember{
+	font-weight: normal;
+    font-size: 15px;
+}
+.toolbar {
+    background: #5090C1;
+    border-top: 2px solid #597597;
+}
+.toolbar>div {
+    display: inline-block;
+    padding: 9px 10px 11px;
+}
+.toolbar>div.admin a{
+	text-shadow: 1px 0 1px rgba(0,0,0,.25);
+	color: #CF7;
+}
+.toolbar>div.api a{
+	text-shadow: 1px 0 1px rgba(0,0,0,.25);
+	color: #FE9;
+	text-decoration: none;
+}
+.copyright{
+	color:#dadada;
+	line-height:40px;
+}

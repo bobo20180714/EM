@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthRoleMapper">
+	<resultMap id="BaseResultMap" type="com.em.core.auth.role.entity.AuthRole">
+		<id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+		<result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+		<result column="ROLE_TYPE" property="roleType" jdbcType="VARCHAR" />
+		<result column="ROLE_DESC" property="roleDesc" jdbcType="VARCHAR" />
+		<result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		ROLE_ID, ROLE_NAME, ROLE_TYPE, ROLE_DESC, APP_ID,
+		CREATE_TIME
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from AUTH_ROLE
+		where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		AUTH_ROLE
+		where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.em.core.auth.role.entity.AuthRole">
+		insert into AUTH_ROLE
+		(ROLE_ID, ROLE_NAME, ROLE_TYPE,
+		ROLE_DESC, APP_ID, CREATE_TIME
+		)
+		values
+		(#{roleId,jdbcType=VARCHAR}, #{roleName,jdbcType=VARCHAR},
+		#{roleType,jdbcType=VARCHAR},
+		#{roleDesc,jdbcType=VARCHAR},
+		#{appId,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.em.core.auth.role.entity.AuthRole">
+		insert into AUTH_ROLE
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				ROLE_ID,
+			</if>
+			<if test="roleName != null">
+				ROLE_NAME,
+			</if>
+			<if test="roleType != null">
+				ROLE_TYPE,
+			</if>
+			<if test="roleDesc != null">
+				ROLE_DESC,
+			</if>
+			<if test="appId != null">
+				APP_ID,
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="roleId != null">
+				#{roleId,jdbcType=VARCHAR},
+			</if>
+			<if test="roleName != null">
+				#{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="roleType != null">
+				#{roleType,jdbcType=VARCHAR},
+			</if>
+			<if test="roleDesc != null">
+				#{roleDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="appId != null">
+				#{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.role.entity.AuthRole">
+		update AUTH_ROLE
+		<set>
+			<if test="roleName != null">
+				ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+			</if>
+			<if test="roleType != null">
+				ROLE_TYPE = #{roleType,jdbcType=VARCHAR},
+			</if>
+			<if test="roleDesc != null">
+				ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="appId != null">
+				APP_ID = #{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.em.core.auth.role.entity.AuthRole">
+		update AUTH_ROLE
+		set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+		ROLE_TYPE =
+		#{roleType,jdbcType=VARCHAR},
+		ROLE_DESC = #{roleDesc,jdbcType=VARCHAR},
+		APP_ID = #{appId,jdbcType=VARCHAR},
+		CREATE_TIME =
+		#{createTime,jdbcType=VARCHAR}
+		where ROLE_ID =
+		#{roleId,jdbcType=VARCHAR}
+	</update>
+	<select id="count" resultType="int" parameterType="map">
+
+		SELECT
+
+		COUNT(*)
+
+		FROM AUTH_ROLE
+
+		WHERE 1=1
+
+		<if test="LIKE_STR != null">
+
+			AND (${LIKE_STR})
+
+		</if>
+
+	</select>
+
+	<delete id="batchDelete" parameterType="map">
+		DELETE FROM AUTH_ROLE
+		WHERE 1=2
+		<if test="ROLE_IDS != null">
+			OR ROLE_ID IN (${ROLE_IDS})
+		</if>
+	</delete>
+
+	<select id="queryPage" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_ROLE
+		WHERE 1=1
+		<!-- ORDER BY CREATE_TIME DESC -->
+	</select>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.role.entity.AuthRole">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_ROLE
+		WHERE 1=1
+	</select>
+	
+	<select id="queryByMap" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_ROLE
+		WHERE 1=1
+	</select>
+
+</mapper>

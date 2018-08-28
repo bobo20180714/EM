@@ -1,0 +1,24 @@
+1、核心代码，
+如解耦模块，除了xml外，需要打成jar包发布,打包时记得选上Add directory entries，不然spring扫描不到里面的注解
+1.1jar包命名规则 
+比如com.sdyy.common.decouple打包后命名为common-decouple.jar
+比如com.sdyy.base.de打包后命名为base-de.jar
+
+打完包发布的时候记得改一下发布版的pom把打的jar包引入进来
+
+
+2、config.properties中的数据库链接要修改，暴露87 IP地址密码的要删掉，改为项目中心的mysql，把数据库脚本给他们执行一遍，
+项目中心的共用mysql数据库如下
+jdbc_url=jdbc:mysql://172.16.10.26:3307/xxxx?allowMultiQueries=true&useUnicode=true&characterEncoding=UTF-8&zeroDateTimeBehavior=convertToNull
+jdbc_username=root
+jdbc_password=1qaz@WSX
+
+172.16.10.26
+administrator
+1qaz@WSX
+
+3、如有新功能记得整理说明文档。
+4、发布时不要把本文件发布出去
+
+5、config.json imageUrlPrefix要配成项目url
+6、如果用到wabacus 要配置wabacus的数据源

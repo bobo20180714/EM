@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthMenuMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.auth.menu.entity.AuthMenu" >
+    <id column="MENU_ID" property="menuId" jdbcType="VARCHAR" />
+    <result column="MENU_NAME" property="menuName" jdbcType="VARCHAR" />
+    <result column="MENU_LABEL" property="menuLabel" jdbcType="VARCHAR" />
+    <result column="MENU_CODE" property="menuCode" jdbcType="VARCHAR" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+    <result column="MENU_ACTION" property="menuAction" jdbcType="VARCHAR" />
+    <result column="PARAMETER" property="parameter" jdbcType="VARCHAR" />
+    <result column="UI_ENTRY" property="uiEntry" jdbcType="VARCHAR" />
+    <result column="MENU_LEVEL" property="menuLevel" jdbcType="INTEGER" />
+    <result column="ROOT_ID" property="rootId" jdbcType="VARCHAR" />
+    <result column="PARENT_ID" property="parentId" jdbcType="VARCHAR" />
+    <result column="PARENT_NAME" property="parentMenuName" jdbcType="VARCHAR" />
+    <result column="DISPLAY_ORDER" property="displayOrder" jdbcType="INTEGER" />
+    <result column="IMAGE_PATH" property="imagePath" jdbcType="VARCHAR" />
+    <result column="EXPAND_PATH" property="expandPath" jdbcType="VARCHAR" />
+    <result column="MENU_SEQ" property="menuSeq" jdbcType="VARCHAR" />
+    <result column="OPEN_MODE" property="openMode" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FUNC_ID" property="funcId" jdbcType="VARCHAR" />
+    <result column="FUNC_NAME" property="funcName" jdbcType="VARCHAR" />
+    <result column="MENU_CSS" property="menuCss" jdbcType="VARCHAR" />
+    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+  </resultMap>
+   <resultMap id="MenuTreeNodeResultMap" type="com.em.core.auth.menu.entity.AuthMenuTreeNode" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+    <result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+    <result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+    <!-- <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" /> -->
+    
+    <result column="MENU_LABEL" property="menuLabel" jdbcType="VARCHAR" />
+    <result column="MENU_ACTION" property="menuAction" jdbcType="VARCHAR" />
+    <result column="MENU_PARAM" property="menuParam" jdbcType="VARCHAR" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+     <result column="MENU_CSS" property="menuCss" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    MENU_ID, MENU_NAME, MENU_LABEL, MENU_CODE, IS_LEAF,  UI_ENTRY, 
+    MENU_LEVEL, ROOT_ID, PARENT_ID, DISPLAY_ORDER, IMAGE_PATH, EXPAND_PATH, MENU_SEQ, 
+    OPEN_MODE, APP_ID, AUTH_MENU.FUNC_ID, MENU_CSS, ICON_SKIN,
+    AUTH_FUNCTION.FUNC_ACTION MENU_ACTION, 
+    AUTH_FUNCTION.PARA_INFO PARAMETER,
+    AUTH_FUNCTION.FUNC_NAME FUNC_NAME,
+     IFNULL((SELECT MENU_NAME FROM AUTH_MENU P_MENU WHERE P_MENU.MENU_ID=AUTH_MENU.PARENT_ID),
+	(SELECT app_name from AUTH_APPLICATION where AUTH_APPLICATION.APP_ID=AUTH_MENU.PARENT_ID)) PARENT_NAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from AUTH_MENU
+    LEFT JOIN AUTH_FUNCTION
+    ON AUTH_MENU.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+   DELETE AUTH_MENU
+    FROM 
+    (
+    	SELECT MENU_ID FROM AUTH_MENU WHERE FIND_IN_SET(MENU_ID, AUTH_MENU_QUERY_CHILDREN(#{menuId}))>0
+	) T
+	INNER JOIN AUTH_MENU
+	ON T.MENU_ID = AUTH_MENU.MENU_ID
+  </delete>
+  <insert id="insert" parameterType="com.em.core.auth.menu.entity.AuthMenu" >
+    insert into AUTH_MENU (MENU_ID, MENU_NAME, MENU_LABEL, 
+      MENU_CODE, IS_LEAF, MENU_ACTION, 
+      PARAMETER, UI_ENTRY, MENU_LEVEL, 
+      ROOT_ID, PARENT_ID, DISPLAY_ORDER, 
+      IMAGE_PATH, EXPAND_PATH, MENU_SEQ, 
+      OPEN_MODE, APP_ID, FUNC_ID, 
+      MENU_CSS, ICON_SKIN)
+    values (#{menuId,jdbcType=VARCHAR}, #{menuName,jdbcType=VARCHAR}, #{menuLabel,jdbcType=VARCHAR}, 
+      #{menuCode,jdbcType=VARCHAR}, #{isLeaf,jdbcType=CHAR}, #{menuAction,jdbcType=VARCHAR}, 
+      #{parameter,jdbcType=VARCHAR}, #{uiEntry,jdbcType=VARCHAR}, #{menuLevel,jdbcType=INTEGER}, 
+      #{rootId,jdbcType=VARCHAR}, #{parentId,jdbcType=VARCHAR}, #{displayOrder,jdbcType=INTEGER}, 
+      #{imagePath,jdbcType=VARCHAR}, #{expandPath,jdbcType=VARCHAR}, #{menuSeq,jdbcType=VARCHAR}, 
+      #{openMode,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{funcId,jdbcType=VARCHAR}, 
+      #{menuCss,jdbcType=VARCHAR}, #{iconSkin,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.auth.menu.entity.AuthMenu" >
+    insert into AUTH_MENU
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        MENU_ID,
+      </if>
+      <if test="menuName != null" >
+        MENU_NAME,
+      </if>
+      <if test="menuLabel != null" >
+        MENU_LABEL,
+      </if>
+      <if test="menuCode != null" >
+        MENU_CODE,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+      <if test="menuAction != null" >
+        MENU_ACTION,
+      </if>
+      <if test="parameter != null" >
+        PARAMETER,
+      </if>
+      <if test="uiEntry != null" >
+        UI_ENTRY,
+      </if>
+      <if test="menuLevel != null" >
+        MENU_LEVEL,
+      </if>
+      <if test="rootId != null" >
+        ROOT_ID,
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID,
+      </if>
+      <if test="displayOrder != null" >
+        DISPLAY_ORDER,
+      </if>
+      <if test="imagePath != null" >
+        IMAGE_PATH,
+      </if>
+      <if test="expandPath != null" >
+        EXPAND_PATH,
+      </if>
+      <if test="menuSeq != null" >
+        MENU_SEQ,
+      </if>
+      <if test="openMode != null" >
+        OPEN_MODE,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="funcId != null" >
+        FUNC_ID,
+      </if>
+      <if test="menuCss != null" >
+        MENU_CSS,
+      </if>
+      <if test="iconSkin != null" >
+        ICON_SKIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="menuId != null" >
+        #{menuId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuName != null" >
+        #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLabel != null" >
+        #{menuLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCode != null" >
+        #{menuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="menuAction != null" >
+        #{menuAction,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null" >
+        #{parameter,jdbcType=VARCHAR},
+      </if>
+      <if test="uiEntry != null" >
+        #{uiEntry,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLevel != null" >
+        #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="rootId != null" >
+        #{rootId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="displayOrder != null" >
+        #{displayOrder,jdbcType=INTEGER},
+      </if>
+      <if test="imagePath != null" >
+        #{imagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="expandPath != null" >
+        #{expandPath,jdbcType=VARCHAR},
+      </if>
+      <if test="menuSeq != null" >
+        #{menuSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="openMode != null" >
+        #{openMode,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="funcId != null" >
+        #{funcId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCss != null" >
+        #{menuCss,jdbcType=VARCHAR},
+      </if>
+      <if test="iconSkin != null" >
+        #{iconSkin,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.menu.entity.AuthMenu" >
+    update AUTH_MENU
+    <set >
+      <if test="menuName != null" >
+        MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLabel != null" >
+        MENU_LABEL = #{menuLabel,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCode != null" >
+        MENU_CODE = #{menuCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      </if>
+      <if test="menuAction != null" >
+        MENU_ACTION = #{menuAction,jdbcType=VARCHAR},
+      </if>
+      <if test="parameter != null" >
+        PARAMETER = #{parameter,jdbcType=VARCHAR},
+      </if>
+      <if test="uiEntry != null" >
+        UI_ENTRY = #{uiEntry,jdbcType=VARCHAR},
+      </if>
+      <if test="menuLevel != null" >
+        MENU_LEVEL = #{menuLevel,jdbcType=INTEGER},
+      </if>
+      <if test="rootId != null" >
+        ROOT_ID = #{rootId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      </if>
+      <if test="displayOrder != null" >
+        DISPLAY_ORDER = #{displayOrder,jdbcType=INTEGER},
+      </if>
+      <if test="imagePath != null" >
+        IMAGE_PATH = #{imagePath,jdbcType=VARCHAR},
+      </if>
+      <if test="expandPath != null" >
+        EXPAND_PATH = #{expandPath,jdbcType=VARCHAR},
+      </if>
+      <if test="menuSeq != null" >
+        MENU_SEQ = #{menuSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="openMode != null" >
+        OPEN_MODE = #{openMode,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="funcId != null" >
+        FUNC_ID = #{funcId,jdbcType=VARCHAR},
+      </if>
+      <if test="menuCss != null" >
+        MENU_CSS = #{menuCss,jdbcType=VARCHAR},
+      </if>
+      <if test="iconSkin != null" >
+        ICON_SKIN = #{iconSkin,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.auth.menu.entity.AuthMenu" >
+    update AUTH_MENU
+    set MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      MENU_LABEL = #{menuLabel,jdbcType=VARCHAR},
+      MENU_CODE = #{menuCode,jdbcType=VARCHAR},
+      IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      MENU_ACTION = #{menuAction,jdbcType=VARCHAR},
+      PARAMETER = #{parameter,jdbcType=VARCHAR},
+      UI_ENTRY = #{uiEntry,jdbcType=VARCHAR},
+      MENU_LEVEL = #{menuLevel,jdbcType=INTEGER},
+      ROOT_ID = #{rootId,jdbcType=VARCHAR},
+      PARENT_ID = #{parentId,jdbcType=VARCHAR},
+      DISPLAY_ORDER = #{displayOrder,jdbcType=INTEGER},
+      IMAGE_PATH = #{imagePath,jdbcType=VARCHAR},
+      EXPAND_PATH = #{expandPath,jdbcType=VARCHAR},
+      MENU_SEQ = #{menuSeq,jdbcType=VARCHAR},
+      OPEN_MODE = #{openMode,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      FUNC_ID = #{funcId,jdbcType=VARCHAR},
+      MENU_CSS = #{menuCss,jdbcType=VARCHAR},
+      ICON_SKIN = #{iconSkin,jdbcType=VARCHAR}
+    where MENU_ID = #{menuId,jdbcType=VARCHAR}
+  </update>
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.menu.entity.AuthMenu" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_MENU
+    LEFT JOIN AUTH_FUNCTION
+    ON AUTH_MENU.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+    WHERE 1=1
+    <if test="menuId != null" >
+      AND  MENU_ID = #{menuId}
+    </if>
+    <if test="menuCode != null" >
+      AND  MENU_CODE = #{menuCode}
+    </if>
+     <if test="notMenuId != null" >
+      AND  MENU_ID != #{notMenuId}
+    </if>
+  </select>
+    <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_MENU
+    LEFT JOIN AUTH_FUNCTION
+    ON AUTH_MENU.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+    WHERE 1=1
+    <if test="MENU_ID != null" >
+      AND  MENU_ID = #{MENU_ID}
+    </if>
+    <if test="MENU_CODE != null" >
+      AND  MENU_CODE = #{MENU_CODE}
+    </if>
+     <if test="NOT_MENU_ID != null" >
+      AND  MENU_ID != #{NOT_MENU_ID}
+    </if>
+  </select>
+  <select id="queryChildrenTreeNodes" resultMap="MenuTreeNodeResultMap" parameterType="string" >
+   SELECT * FROM (
+    (
+		SELECT
+			APP_ID ID,
+			'-1' PID,
+			APP_CODE CODE,
+			'菜单管理' NAME,
+			'ROOT' TYPE,
+			'FRoot' ICON_SKIN,
+			'1' IS_PARENT,
+			APP_ID EXTEND_ATTR,
+			APP_NAME MENU_LABEL,
+			'' MENU_ACTION,
+			'' MENU_PARAM,
+			'0' IS_LEAF,
+			'' MENU_CSS
+		FROM
+			AUTH_APPLICATION
+		WHERE
+			(
+				APP_ID = 'root'
+			)
+	)
+	UNION ALL
+		(
+			SELECT
+				APP_ID ID,
+				'root' PID,
+				APP_CODE CODE,
+				APP_NAME NAME,
+				'APP' TYPE,
+				'FIcon01' ICON_SKIN,
+				'1' IS_PARENT,
+				APP_ID EXTEND_ATTR,
+				APP_NAME MENU_LABEL,
+				'' MENU_ACTION,
+				'' MENU_PARAM,
+				'0' IS_LEAF,
+				'' MENU_CSS
+			FROM
+				AUTH_APPLICATION
+			WHERE
+				(
+					APP_ID != 'root'
+				)
+		)
+	UNION ALL(
+		SELECT
+			MENU.MENU_ID ID,
+			MENU.PARENT_ID PID,
+			MENU.DISPLAY_ORDER CODE,
+			MENU.MENU_NAME NAME,
+			CASE MENU.IS_LEAF WHEN '0' THEN	'PARENT_MENU' ELSE 'LEAF_MENU' END  TYPE,
+			IFNULL(MENU.ICON_SKIN,(CASE MENU.IS_LEAF WHEN '0' THEN 'RFIcon02' ELSE 'RFicon03' END)) ICON_SKIN,
+		    CASE MENU.IS_LEAF WHEN '0' THEN	'1' ELSE '0' END IS_PARENT,
+			MENU.APP_ID EXTEND_ATTR,
+			<!-- CONCAT(FUNC.FUNC_ACTION,FUNC.PARA_INFO) EXTEND_ATTR_1, -->
+			MENU.MENU_LABEL MENU_LABEL,
+			FUNC.FUNC_ACTION MENU_ACTION,
+			FUNC.PARA_INFO MENU_PARAM,
+			IS_LEAF,
+			MENU_CSS
+		FROM
+			AUTH_MENU MENU
+		LEFT JOIN	AUTH_FUNCTION FUNC
+		ON MENU.FUNC_ID = FUNC.FUNC_ID
+		WHERE 1=1
+		<if test="_parameter != null" >
+			AND MENU.PARENT_ID = #{_parameter}
+		</if>
+		)
+	) T
+	WHERE 1=1
+	<if test="_parameter == null" >
+		AND T.PID in ('-1','root')
+	</if>
+	<if test="_parameter != null" >
+		AND T.PID = #{_parameter}
+	</if>
+	ORDER BY T.CODE
+  </select>
+  <select id="queryAllMenuIds" resultType="string" parameterType="map">
+  	SELECT 
+		AUTH_MENU_QUERY_PARENTS(T.MENU_IDS)
+		FROM
+		 (
+					SELECT
+						GROUP_CONCAT(AUTH_MENU.MENU_ID) MENU_IDS
+					FROM
+						AUTH_MENU
+					INNER JOIN 
+						AUTH_FUNCTION T_AUTH_FUNC
+					ON T_AUTH_FUNC.FUNC_ID = AUTH_MENU.FUNC_ID
+		) T
+  </select>
+  <select id="queryAll" resultType="map" parameterType="map">
+  	SELECT
+	MENU_ID,
+	MENU_LABEL,
+	MENU_CSS,
+	IS_LEAF,
+	PARENT_ID,
+	MENU_LEVEL,
+	OPEN_MODE,
+	AUTH_FUNCTION.FUNC_ACTION MENU_ACTION,
+	AUTH_FUNCTION.PARA_INFO PARAMETER
+	FROM
+		AUTH_MENU 
+	LEFT JOIN AUTH_FUNCTION ON AUTH_MENU.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+	WHERE 
+	FIND_IN_SET(
+		AUTH_MENU.MENU_ID,
+		<!-- 递归查询包含自己在内的所有父级菜单的ID，拼成FIND_IN_SET的参数 -->
+		#{MENU_IDS}
+	)>0
+	<if test="PARENT_ID != null" >
+		AND FIND_IN_SET(MENU_ID, AUTH_MENU_QUERY_CHILDREN(#{PARENT_ID}))>0
+	</if>
+	<if test="MENU_LEVEL != null" >
+		AND AUTH_MENU.MENU_LEVEL = #{MENU_LEVEL}
+	</if>
+	<if test="APP_ID != null" >
+		AND AUTH_MENU.APP_ID = #{APP_ID}
+	</if>
+	ORDER BY
+	AUTH_MENU.MENU_LEVEL,
+	AUTH_MENU.DISPLAY_ORDER
+	  	
+  </select>
+   <select id="queryPermittedMenuIds" resultType="string" parameterType="map">
+  	SELECT 
+		AUTH_MENU_QUERY_PARENTS(T.MENU_IDS)
+		FROM
+		 (	
+			SELECT
+				GROUP_CONCAT(AUTH_MENU.MENU_ID) MENU_IDS
+			FROM
+				AUTH_MENU
+			INNER JOIN 
+				(	<!-- 获取所有有权限的资源ID（角色-资源；操作员-资源） -->
+					SELECT
+						FUNC_ID
+					FROM
+						AUTH_ROLE_FUNCTION
+					INNER JOIN AUTH_OPERATOR_ROLE ON AUTH_OPERATOR_ROLE.ROLE_ID = AUTH_ROLE_FUNCTION.ROLE_ID
+					WHERE
+						1=1
+						<if test="OPERATOR_ID != null and OPERATOR_ID != 'superadmin'" >
+							AND AUTH_OPERATOR_ROLE.OPERATOR_ID = #{OPERATOR_ID}
+						</if>
+					GROUP BY
+						FUNC_ID
+					UNION ALL
+						SELECT
+							FUNC_ID
+						FROM
+							AUTH_OPERATOR_FUNCTION
+						WHERE
+							1=1
+							<if test="OPERATOR_ID != null and OPERATOR_ID != 'superadmin'" >
+								AND AUTH_OPERATOR_FUNCTION.OPERATOR_ID = #{OPERATOR_ID}
+							</if>
+					) T_AUTH_FUNC
+			ON T_AUTH_FUNC.FUNC_ID = AUTH_MENU.FUNC_ID
+		) T
+  </select>
+   <select id="queryPermitted" resultType="map" parameterType="map">
+  	SELECT
+	MENU_ID,
+	MENU_LABEL,
+	MENU_CSS,
+	IS_LEAF,
+	PARENT_ID,
+	MENU_LEVEL,
+	OPEN_MODE,
+	AUTH_FUNCTION.FUNC_ACTION MENU_ACTION,
+	AUTH_FUNCTION.PARA_INFO PARAMETER
+	<!-- 先找出所有有权限的资源的FUNC_ID，再关联出所有的叶子菜单节点的MENU_ID，再通过这些MENU_ID 找到所有的父级菜单MENU_ID 拼接起来 -->
+	FROM
+		AUTH_MENU 
+	LEFT JOIN AUTH_FUNCTION ON AUTH_MENU.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+	WHERE 
+	FIND_IN_SET(
+		AUTH_MENU.MENU_ID,
+		<!-- 递归查询包含自己在内的所有父级菜单的ID，拼成FIND_IN_SET的参数 -->
+		#{MENU_IDS}
+	)>0
+	<if test="PARENT_ID != null" >
+		<!-- AND AC_MENU.PARENT_ID = #{PARENT_ID} -->
+		AND FIND_IN_SET(MENU_ID, AUTH_MENU_QUERY_CHILDREN(#{PARENT_ID}))>0
+	</if>
+	<if test="MENU_LEVEL != null" >
+		AND AUTH_MENU.MENU_LEVEL = #{MENU_LEVEL}
+	</if>
+	<if test="APP_ID != null" >
+		AND AUTH_MENU.APP_ID = #{APP_ID}
+	</if>
+	ORDER BY AUTH_MENU.MENU_LEVEL,AUTH_MENU.DISPLAY_ORDER
+  </select>
+  
+  <select id="getParentName" resultType="string" parameterType="string" >
+    SELECT MENU_NAME FROM AUTH_MENU
+    LEFT JOIN AUTH_FUNCTION
+    ON AUTH_MENU.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+    WHERE MENU_ID = #{PARENT_ID}
+  </select>
+  
+</mapper>

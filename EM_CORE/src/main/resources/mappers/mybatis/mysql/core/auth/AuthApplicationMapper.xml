@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthApplicationMapper">
+	<resultMap id="BaseResultMap"
+		type="com.em.core.auth.application.entity.AuthApplication">
+		<id column="APP_ID" property="appId" jdbcType="VARCHAR" />
+		<result column="APP_CODE" property="appCode" jdbcType="VARCHAR" />
+		<result column="APP_NAME" property="appName" jdbcType="VARCHAR" />
+		<result column="APP_TYPE" property="appType" jdbcType="VARCHAR" />
+		<result column="IS_OPEN" property="isOpen" jdbcType="CHAR" />
+		<result column="OPEN_DATE" property="openDate" jdbcType="VARCHAR" />
+		<result column="URL" property="url" jdbcType="VARCHAR" />
+		<result column="APP_DESC" property="appDesc" jdbcType="VARCHAR" />
+		<result column="IP_ADDR" property="ipAddr" jdbcType="VARCHAR" />
+		<result column="IP_PORT" property="ipPort" jdbcType="VARCHAR" />
+	</resultMap>
+	<resultMap id="ZTreeNodeResultMap" type="com.em.common.zTree.ZTreeNode">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PID" property="pId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+		<result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+		<result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+		<result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		APP_ID, APP_CODE, APP_NAME, APP_TYPE, IS_OPEN, OPEN_DATE,
+		URL, APP_DESC,
+		IP_ADDR,
+		IP_PORT
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from AUTH_APPLICATION
+		where APP_ID = #{appId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		AUTH_APPLICATION
+		where APP_ID = #{appId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert"
+		parameterType="com.em.core.auth.application.entity.AuthApplication">
+		insert into AUTH_APPLICATION (APP_ID, APP_CODE,
+		APP_NAME,
+		APP_TYPE, IS_OPEN, OPEN_DATE,
+		URL, APP_DESC, IP_ADDR,
+		IP_PORT)
+		values (#{appId,jdbcType=VARCHAR}, #{appCode,jdbcType=VARCHAR},
+		#{appName,jdbcType=VARCHAR},
+		#{appType,jdbcType=VARCHAR},
+		#{isOpen,jdbcType=CHAR}, #{openDate,jdbcType=VARCHAR},
+		#{url,jdbcType=VARCHAR}, #{appDesc,jdbcType=VARCHAR},
+		#{ipAddr,jdbcType=VARCHAR},
+		#{ipPort,jdbcType=VARCHAR})
+	</insert>
+	<insert id="insertSelective"
+		parameterType="com.em.core.auth.application.entity.AuthApplication">
+		insert into AUTH_APPLICATION
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="appId != null">
+				APP_ID,
+			</if>
+			<if test="appCode != null">
+				APP_CODE,
+			</if>
+			<if test="appName != null">
+				APP_NAME,
+			</if>
+			<if test="appType != null">
+				APP_TYPE,
+			</if>
+			<if test="isOpen != null">
+				IS_OPEN,
+			</if>
+			<if test="openDate != null">
+				OPEN_DATE,
+			</if>
+			<if test="url != null">
+				URL,
+			</if>
+			<if test="appDesc != null">
+				APP_DESC,
+			</if>
+			<if test="ipAddr != null">
+				IP_ADDR,
+			</if>
+			<if test="ipPort != null">
+				IP_PORT,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="appId != null">
+				#{appId,jdbcType=VARCHAR},
+			</if>
+			<if test="appCode != null">
+				#{appCode,jdbcType=VARCHAR},
+			</if>
+			<if test="appName != null">
+				#{appName,jdbcType=VARCHAR},
+			</if>
+			<if test="appType != null">
+				#{appType,jdbcType=VARCHAR},
+			</if>
+			<if test="isOpen != null">
+				#{isOpen,jdbcType=CHAR},
+			</if>
+			<if test="openDate != null">
+				#{openDate,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				#{url,jdbcType=VARCHAR},
+			</if>
+			<if test="appDesc != null">
+				#{appDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="ipAddr != null">
+				#{ipAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="ipPort != null">
+				#{ipPort,jdbcType=VARCHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective"
+		parameterType="com.em.core.auth.application.entity.AuthApplication">
+		update AUTH_APPLICATION
+		<set>
+			<if test="appCode != null">
+				APP_CODE = #{appCode,jdbcType=VARCHAR},
+			</if>
+			<if test="appName != null">
+				APP_NAME = #{appName,jdbcType=VARCHAR},
+			</if>
+			<if test="appType != null">
+				APP_TYPE = #{appType,jdbcType=VARCHAR},
+			</if>
+			<if test="isOpen != null">
+				IS_OPEN = #{isOpen,jdbcType=CHAR},
+			</if>
+			<if test="openDate != null">
+				OPEN_DATE = #{openDate,jdbcType=VARCHAR},
+			</if>
+			<if test="url != null">
+				URL = #{url,jdbcType=VARCHAR},
+			</if>
+			<if test="appDesc != null">
+				APP_DESC = #{appDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="ipAddr != null">
+				IP_ADDR = #{ipAddr,jdbcType=VARCHAR},
+			</if>
+			<if test="ipPort != null">
+				IP_PORT = #{ipPort,jdbcType=VARCHAR},
+			</if>
+		</set>
+		where APP_ID = #{appId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey"
+		parameterType="com.em.core.auth.application.entity.AuthApplication">
+		update AUTH_APPLICATION
+		set APP_CODE =
+		#{appCode,jdbcType=VARCHAR},
+		APP_NAME = #{appName,jdbcType=VARCHAR},
+		APP_TYPE = #{appType,jdbcType=VARCHAR},
+		IS_OPEN =
+		#{isOpen,jdbcType=CHAR},
+		OPEN_DATE = #{openDate,jdbcType=VARCHAR},
+		URL =
+		#{url,jdbcType=VARCHAR},
+		APP_DESC = #{appDesc,jdbcType=VARCHAR},
+		IP_ADDR = #{ipAddr,jdbcType=VARCHAR},
+		IP_PORT =
+		#{ipPort,jdbcType=VARCHAR}
+		where APP_ID = #{appId,jdbcType=VARCHAR}
+	</update>
+	<select id="queryByParamMap" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_APPLICATION
+		WHERE 1=1
+		<if test="appCode != null">
+			AND APP_CODE = #{appCode}
+		</if>
+		<if test="appId != null">
+			AND APP_ID != #{appId}
+		</if>
+	</select>
+	<select id="query" resultMap="BaseResultMap"
+		parameterType="com.em.core.auth.application.entity.AuthApplication">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_APPLICATION
+		WHERE 1=1
+		<if test="appCode != null">
+			AND APP_CODE = #{appCode}
+		</if>
+		<if test="appId != null">
+			AND APP_ID = #{appId}
+		</if>
+	</select>
+	<!-- 新增特有方法 -->
+	<select id="getTopMenuParent" resultType="string" parameterType="string">
+		SELECT APP_NAME FROM AUTH_APPLICATION
+		WHERE APP_ID = #{_parameter}
+	</select>
+
+	<select id="queryChildrenTreeNodes" resultMap="ZTreeNodeResultMap"
+		parameterType="string">
+		<!-- 构建说明 因为：应用没有父子关系，功能组必须有父应用或者父功能组，功能（资源）必须挂在功能组下 所以：应用的父id都是root，id为root的应用是条特殊数据 
+			功能组结构通过 功能组主表自身id、父功能组【如果父功能组字段不是空的则是挂在父岗位下,如果父功能组字段是空的则是挂在应用下】 功能（资源）结构通过和功能组等等父子关系来构建 -->
+		SELECT
+		*
+		FROM
+		v_auth_app_funcg_func_tree T
+		WHERE
+		1=1
+		<if test="_parameter == null">
+			AND T.PID in ('-1','root')
+		</if>
+		<if test="_parameter != null">
+			AND T.PID = #{_parameter}
+		</if>
+		ORDER BY T.TYPE, T.CODE
+	</select>
+</mapper>

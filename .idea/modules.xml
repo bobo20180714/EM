@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/EM_CORE/EM_CORE.iml" filepath="$PROJECT_DIR$/EM_CORE/EM_CORE.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EM_PARENT/EM_PARENT.iml" filepath="$PROJECT_DIR$/EM_PARENT/EM_PARENT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/EM_WEB/EM_WEB.iml" filepath="$PROJECT_DIR$/EM_WEB/EM_WEB.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/em.iml" filepath="$PROJECT_DIR$/.idea/em.iml" />
+    </modules>
+  </component>
+</project>

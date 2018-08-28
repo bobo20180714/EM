@@ -1,0 +1,834 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgEmployeeMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.employee.entity.OrgEmployee" >
+    <id column="EMP_ID" property="empId" jdbcType="VARCHAR" />
+    <result column="EMP_CODE" property="empCode" jdbcType="VARCHAR" />
+    <result column="OPERATOR_ID" property="operatorId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="EMP_NAME" property="empName" jdbcType="VARCHAR" />
+    <result column="REAL_NAME" property="realName" jdbcType="VARCHAR" />
+    <result column="GENDER" property="gender" jdbcType="VARCHAR" />
+    <result column="BIRTH_DATE" property="birthDate" jdbcType="VARCHAR" />
+    <result column="POSITION" property="position" jdbcType="VARCHAR" />
+    <result column="EMP_STATUS" property="empStatus" jdbcType="VARCHAR" />
+    <result column="CARD_TYPE" property="cardType" jdbcType="VARCHAR" />
+    <result column="CARD_NO" property="cardNo" jdbcType="VARCHAR" />
+    <result column="IN_DATE" property="inDate" jdbcType="VARCHAR" />
+    <result column="OUT_DATE" property="outDate" jdbcType="VARCHAR" />
+    <result column="O_TEL" property="oTel" jdbcType="VARCHAR" />
+    <result column="O_ADDRESS" property="oAddress" jdbcType="VARCHAR" />
+    <result column="O_ZIP_CODE" property="oZipCode" jdbcType="VARCHAR" />
+    <result column="O_EMAIL" property="oEmail" jdbcType="VARCHAR" />
+    <result column="FAX_NO" property="faxNo" jdbcType="VARCHAR" />
+    <result column="MOBILE_NO" property="mobileNo" jdbcType="VARCHAR" />
+    <result column="MSN" property="msn" jdbcType="VARCHAR" />
+    <result column="H_TEL" property="hTel" jdbcType="VARCHAR" />
+    <result column="H_ADDRESS" property="hAddress" jdbcType="VARCHAR" />
+    <result column="H_ZIP_CODE" property="hZipCode" jdbcType="VARCHAR" />
+    <result column="P_EMAIL" property="pEmail" jdbcType="VARCHAR" />
+    <result column="PARTY" property="party" jdbcType="VARCHAR" />
+    <result column="DEGREE" property="degree" jdbcType="VARCHAR" />
+    <result column="D_SUPERVISOR" property="dSupervisor" jdbcType="VARCHAR" />
+    <result column="SPECIALTY" property="specialty" jdbcType="VARCHAR" />
+    <result column="WORK_EXP" property="workExp" jdbcType="VARCHAR" />
+    <result column="REG_DATE" property="regDate" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="VARCHAR" />
+    <result column="ORG_ID_LIST" property="orgIdList" jdbcType="VARCHAR" />
+    <result column="ORG_ID_LIST_TEXT" property="orgIdListText" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="REMARK" property="remark" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="ZTreeNodeResultMap" type="com.em.common.zTree.ZTreeNode" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+    <result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+    <result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+    <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+    <result column="CHECKED" property="checked" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EMP_ID, EMP_CODE, ORG_EMPLOYEE.OPERATOR_ID, ORG_EMPLOYEE.USER_ID, EMP_NAME, REAL_NAME, GENDER, BIRTH_DATE, POSITION, EMP_STATUS, CARD_TYPE, 
+	CARD_NO, IN_DATE, OUT_DATE, O_TEL, O_ADDRESS, O_ZIP_CODE, O_EMAIL, FAX_NO, MOBILE_NO, MSN, H_TEL, H_ADDRESS, H_ZIP_CODE, 
+	P_EMAIL, PARTY, DEGREE, D_SUPERVISOR, SPECIALTY, WORK_EXP, REG_DATE, CREATE_TIME, LAST_UPDATE_TIME, ORG_ID_LIST, 
+	AUTH_OPERATOR.STATUS,
+	(SELECT GROUP_CONCAT(ORG_NAME) FROM ORG_ORGANIZATION 
+	WHERE FIND_IN_SET(ORG_ORGANIZATION.ORG_ID,ORG_EMPLOYEE.ORG_ID_LIST)>0) ORG_ID_LIST_TEXT, ORG_ID, 
+	REMARK  
+  </sql>
+  <sql id="queryChildrenTreeNodes_condition">
+		<!-- <if test="APP_ID != null and APP_ID !=''">
+			AND APP_ID = #{APP_ID}
+		</if> -->
+	</sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORG_EMPLOYEE
+    LEFT JOIN AUTH_OPERATOR on AUTH_OPERATOR.OPERATOR_ID=ORG_EMPLOYEE.OPERATOR_ID
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ORG_EMPLOYEE
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.employee.entity.OrgEmployee" >
+    insert into ORG_EMPLOYEE (EMP_ID, EMP_CODE, OPERATOR_ID, 
+      USER_ID, EMP_NAME, REAL_NAME, 
+      GENDER, BIRTH_DATE, POSITION, 
+      EMP_STATUS, CARD_TYPE, CARD_NO, 
+      IN_DATE, OUT_DATE, O_TEL, 
+      O_ADDRESS, O_ZIP_CODE, O_EMAIL, 
+      FAX_NO, MOBILE_NO, MSN, 
+      H_TEL, H_ADDRESS, H_ZIP_CODE, 
+      P_EMAIL, PARTY, DEGREE, 
+      D_SUPERVISOR, SPECIALTY, WORK_EXP, 
+      REG_DATE, CREATE_TIME, LAST_UPDATE_TIME, 
+      ORG_ID_LIST, ORG_ID, REMARK
+      )
+    values (#{empId,jdbcType=VARCHAR}, #{empCode,jdbcType=VARCHAR}, #{operatorId,jdbcType=VARCHAR}, 
+      #{userId,jdbcType=VARCHAR}, #{empName,jdbcType=VARCHAR}, #{realName,jdbcType=VARCHAR}, 
+      #{gender,jdbcType=VARCHAR}, #{birthDate,jdbcType=VARCHAR}, #{position,jdbcType=VARCHAR}, 
+      #{empStatus,jdbcType=VARCHAR}, #{cardType,jdbcType=VARCHAR}, #{cardNo,jdbcType=VARCHAR}, 
+      #{inDate,jdbcType=VARCHAR}, #{outDate,jdbcType=VARCHAR}, #{oTel,jdbcType=VARCHAR}, 
+      #{oAddress,jdbcType=VARCHAR}, #{oZipCode,jdbcType=VARCHAR}, #{oEmail,jdbcType=VARCHAR}, 
+      #{faxNo,jdbcType=VARCHAR}, #{mobileNo,jdbcType=VARCHAR}, #{msn,jdbcType=VARCHAR}, 
+      #{hTel,jdbcType=VARCHAR}, #{hAddress,jdbcType=VARCHAR}, #{hZipCode,jdbcType=VARCHAR}, 
+      #{pEmail,jdbcType=VARCHAR}, #{party,jdbcType=VARCHAR}, #{degree,jdbcType=VARCHAR}, 
+      #{dSupervisor,jdbcType=VARCHAR}, #{specialty,jdbcType=VARCHAR}, #{workExp,jdbcType=VARCHAR}, 
+      #{regDate,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, #{lastUpdateTime,jdbcType=VARCHAR}, 
+      #{orgIdList,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.employee.entity.OrgEmployee" >
+    insert into ORG_EMPLOYEE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        EMP_ID,
+      </if>
+      <if test="empCode != null" >
+        EMP_CODE,
+      </if>
+      <if test="operatorId != null" >
+        OPERATOR_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="empName != null" >
+        EMP_NAME,
+      </if>
+      <if test="realName != null" >
+        REAL_NAME,
+      </if>
+      <if test="gender != null" >
+        GENDER,
+      </if>
+      <if test="birthDate != null" >
+        BIRTH_DATE,
+      </if>
+      <if test="position != null" >
+        POSITION,
+      </if>
+      <if test="empStatus != null" >
+        EMP_STATUS,
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE,
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO,
+      </if>
+      <if test="inDate != null" >
+        IN_DATE,
+      </if>
+      <if test="outDate != null" >
+        OUT_DATE,
+      </if>
+      <if test="oTel != null" >
+        O_TEL,
+      </if>
+      <if test="oAddress != null" >
+        O_ADDRESS,
+      </if>
+      <if test="oZipCode != null" >
+        O_ZIP_CODE,
+      </if>
+      <if test="oEmail != null" >
+        O_EMAIL,
+      </if>
+      <if test="faxNo != null" >
+        FAX_NO,
+      </if>
+      <if test="mobileNo != null" >
+        MOBILE_NO,
+      </if>
+      <if test="msn != null" >
+        MSN,
+      </if>
+      <if test="hTel != null" >
+        H_TEL,
+      </if>
+      <if test="hAddress != null" >
+        H_ADDRESS,
+      </if>
+      <if test="hZipCode != null" >
+        H_ZIP_CODE,
+      </if>
+      <if test="pEmail != null" >
+        P_EMAIL,
+      </if>
+      <if test="party != null" >
+        PARTY,
+      </if>
+      <if test="degree != null" >
+        DEGREE,
+      </if>
+      <if test="dSupervisor != null" >
+        D_SUPERVISOR,
+      </if>
+      <if test="specialty != null" >
+        SPECIALTY,
+      </if>
+      <if test="workExp != null" >
+        WORK_EXP,
+      </if>
+      <if test="regDate != null" >
+        REG_DATE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="orgIdList != null" >
+        ORG_ID_LIST,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="remark != null" >
+        REMARK,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="empCode != null" >
+        #{empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="empName != null" >
+        #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        #{birthDate,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="empStatus != null" >
+        #{empStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="inDate != null" >
+        #{inDate,jdbcType=VARCHAR},
+      </if>
+      <if test="outDate != null" >
+        #{outDate,jdbcType=VARCHAR},
+      </if>
+      <if test="oTel != null" >
+        #{oTel,jdbcType=VARCHAR},
+      </if>
+      <if test="oAddress != null" >
+        #{oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="oZipCode != null" >
+        #{oZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="oEmail != null" >
+        #{oEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="faxNo != null" >
+        #{faxNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null" >
+        #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="msn != null" >
+        #{msn,jdbcType=VARCHAR},
+      </if>
+      <if test="hTel != null" >
+        #{hTel,jdbcType=VARCHAR},
+      </if>
+      <if test="hAddress != null" >
+        #{hAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="hZipCode != null" >
+        #{hZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pEmail != null" >
+        #{pEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="party != null" >
+        #{party,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="dSupervisor != null" >
+        #{dSupervisor,jdbcType=VARCHAR},
+      </if>
+      <if test="specialty != null" >
+        #{specialty,jdbcType=VARCHAR},
+      </if>
+      <if test="workExp != null" >
+        #{workExp,jdbcType=VARCHAR},
+      </if>
+      <if test="regDate != null" >
+        #{regDate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orgIdList != null" >
+        #{orgIdList,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.org.employee.entity.OrgEmployee" >
+    update ORG_EMPLOYEE
+    <set >
+      <if test="empCode != null" >
+        EMP_CODE = #{empCode,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorId != null" >
+        OPERATOR_ID = #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="empName != null" >
+        EMP_NAME = #{empName,jdbcType=VARCHAR},
+      </if>
+      <if test="realName != null" >
+        REAL_NAME = #{realName,jdbcType=VARCHAR},
+      </if>
+      <if test="gender != null" >
+        GENDER = #{gender,jdbcType=VARCHAR},
+      </if>
+      <if test="birthDate != null" >
+        BIRTH_DATE = #{birthDate,jdbcType=VARCHAR},
+      </if>
+      <if test="position != null" >
+        POSITION = #{position,jdbcType=VARCHAR},
+      </if>
+      <if test="empStatus != null" >
+        EMP_STATUS = #{empStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null" >
+        CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+      </if>
+      <if test="cardNo != null" >
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="inDate != null" >
+        IN_DATE = #{inDate,jdbcType=VARCHAR},
+      </if>
+      <if test="outDate != null" >
+        OUT_DATE = #{outDate,jdbcType=VARCHAR},
+      </if>
+      <if test="oTel != null" >
+        O_TEL = #{oTel,jdbcType=VARCHAR},
+      </if>
+      <if test="oAddress != null" >
+        O_ADDRESS = #{oAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="oZipCode != null" >
+        O_ZIP_CODE = #{oZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="oEmail != null" >
+        O_EMAIL = #{oEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="faxNo != null" >
+        FAX_NO = #{faxNo,jdbcType=VARCHAR},
+      </if>
+      <if test="mobileNo != null" >
+        MOBILE_NO = #{mobileNo,jdbcType=VARCHAR},
+      </if>
+      <if test="msn != null" >
+        MSN = #{msn,jdbcType=VARCHAR},
+      </if>
+      <if test="hTel != null" >
+        H_TEL = #{hTel,jdbcType=VARCHAR},
+      </if>
+      <if test="hAddress != null" >
+        H_ADDRESS = #{hAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="hZipCode != null" >
+        H_ZIP_CODE = #{hZipCode,jdbcType=VARCHAR},
+      </if>
+      <if test="pEmail != null" >
+        P_EMAIL = #{pEmail,jdbcType=VARCHAR},
+      </if>
+      <if test="party != null" >
+        PARTY = #{party,jdbcType=VARCHAR},
+      </if>
+      <if test="degree != null" >
+        DEGREE = #{degree,jdbcType=VARCHAR},
+      </if>
+      <if test="dSupervisor != null" >
+        D_SUPERVISOR = #{dSupervisor,jdbcType=VARCHAR},
+      </if>
+      <if test="specialty != null" >
+        SPECIALTY = #{specialty,jdbcType=VARCHAR},
+      </if>
+      <if test="workExp != null" >
+        WORK_EXP = #{workExp,jdbcType=VARCHAR},
+      </if>
+      <if test="regDate != null" >
+        REG_DATE = #{regDate,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="orgIdList != null" >
+        ORG_ID_LIST = #{orgIdList,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        REMARK = #{remark,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.org.employee.entity.OrgEmployee" >
+    update ORG_EMPLOYEE
+    set EMP_CODE = #{empCode,jdbcType=VARCHAR},
+      OPERATOR_ID = #{operatorId,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      EMP_NAME = #{empName,jdbcType=VARCHAR},
+      REAL_NAME = #{realName,jdbcType=VARCHAR},
+      GENDER = #{gender,jdbcType=VARCHAR},
+      BIRTH_DATE = #{birthDate,jdbcType=VARCHAR},
+      POSITION = #{position,jdbcType=VARCHAR},
+      EMP_STATUS = #{empStatus,jdbcType=VARCHAR},
+      CARD_TYPE = #{cardType,jdbcType=VARCHAR},
+      CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      IN_DATE = #{inDate,jdbcType=VARCHAR},
+      OUT_DATE = #{outDate,jdbcType=VARCHAR},
+      O_TEL = #{oTel,jdbcType=VARCHAR},
+      O_ADDRESS = #{oAddress,jdbcType=VARCHAR},
+      O_ZIP_CODE = #{oZipCode,jdbcType=VARCHAR},
+      O_EMAIL = #{oEmail,jdbcType=VARCHAR},
+      FAX_NO = #{faxNo,jdbcType=VARCHAR},
+      MOBILE_NO = #{mobileNo,jdbcType=VARCHAR},
+      MSN = #{msn,jdbcType=VARCHAR},
+      H_TEL = #{hTel,jdbcType=VARCHAR},
+      H_ADDRESS = #{hAddress,jdbcType=VARCHAR},
+      H_ZIP_CODE = #{hZipCode,jdbcType=VARCHAR},
+      P_EMAIL = #{pEmail,jdbcType=VARCHAR},
+      PARTY = #{party,jdbcType=VARCHAR},
+      DEGREE = #{degree,jdbcType=VARCHAR},
+      D_SUPERVISOR = #{dSupervisor,jdbcType=VARCHAR},
+      SPECIALTY = #{specialty,jdbcType=VARCHAR},
+      WORK_EXP = #{workExp,jdbcType=VARCHAR},
+      REG_DATE = #{regDate,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+      ORG_ID_LIST = #{orgIdList,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      REMARK = #{remark,jdbcType=VARCHAR}
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+  </update>
+  <!-- 查询所有机构和人员关系,包括通过岗位获得的机构关系(不包含root机构节点和 与root直接关联的人员) -->
+  <select id="queryMultiOrgEmpTreeNodes" resultMap="ZTreeNodeResultMap" parameterType="map" >
+  	SELECT * FROM (
+  	(
+		SELECT
+			ORG_ID ID,
+			PARENT_ORG_ID PID,
+			ORG_CODE CODE,
+			ORG_NAME NAME,
+			'ORG' TYPE,
+			'OpIcon02' ICON_SKIN,
+			'1' IS_PARENT,
+			'' EXTEND_ATTR
+		FROM
+			ORG_ORGANIZATION
+		WHERE
+			ORG_ID!='root'
+			<if test="orgIdChildrenList!=null">
+				AND FIND_IN_SET(ORG_ID, #{orgIdChildrenList})>0
+			</if>
+	)
+	UNION ALL
+		(
+			SELECT
+				ORG_EMPLOYEE.EMP_ID ID,
+				ORG_EMPLOYEE_ORGANIZATION.ORG_ID PID,
+				ORG_EMPLOYEE.EMP_CODE CODE,
+				ORG_EMPLOYEE.EMP_NAME NAME,
+				'EMP' TYPE,
+				'OpIcon03' ICON_SKIN,
+				'0' IS_PARENT,
+				ORG_EMPLOYEE.OPERATOR_ID EXTEND_ATTR
+			FROM
+				ORG_EMPLOYEE
+			INNER JOIN ORG_EMPLOYEE_ORGANIZATION ON
+				ORG_EMPLOYEE_ORGANIZATION.EMP_ID = ORG_EMPLOYEE.EMP_ID
+				AND ORG_EMPLOYEE_ORGANIZATION.ORG_ID !='root'
+			WHERE
+				1=1
+				<if test="orgIdChildrenList!=null">
+					AND FIND_IN_SET(ORG_EMPLOYEE_ORGANIZATION.ORG_ID, #{orgIdChildrenList})>0
+				</if>
+		)
+	UNION ALL
+		(
+			SELECT
+				ORG_EMPLOYEE.EMP_ID ID,
+				ORG_POSITION.ORG_ID PID,
+				ORG_EMPLOYEE.EMP_CODE CODE,
+				ORG_EMPLOYEE.EMP_NAME NAME,
+				'EMP' TYPE,
+				'OpIcon03' ICON_SKIN,
+				'0' IS_PARENT,
+				ORG_EMPLOYEE.OPERATOR_ID EXTEND_ATTR
+			FROM
+				ORG_EMPLOYEE
+			INNER JOIN ORG_EMPLOYEE_POSITION ON
+				ORG_EMPLOYEE_POSITION.EMP_ID = ORG_EMPLOYEE.EMP_ID
+			INNER JOIN ORG_POSITION ON
+				ORG_EMPLOYEE_POSITION.POSITION_ID = ORG_POSITION.POSITION_ID
+				AND ORG_POSITION.ORG_ID!='root'
+			WHERE
+				1=1
+				<if test="orgIdChildrenList!=null">
+					AND FIND_IN_SET(ORG_POSITION.ORG_ID, #{orgIdChildrenList})>0
+				</if>
+		)
+	) T
+	ORDER BY T.TYPE, T.CODE
+  </select>
+  <!-- 仅查询主机构和人员关系 -->
+  <select id="queryOrgEmpTreeNodes" resultMap="ZTreeNodeResultMap" parameterType="map" >
+  	SELECT * FROM (
+  	(
+		SELECT
+			ORG_ID ID,
+			PARENT_ORG_ID PID,
+			ORG_CODE CODE,
+			ORG_NAME NAME,
+			'ORG' TYPE,
+			'OpIcon02' ICON_SKIN,
+			'1' IS_PARENT,
+			'' EXTEND_ATTR
+		FROM
+			ORG_ORGANIZATION
+		WHERE
+			1 = 1
+			<include refid="queryChildrenTreeNodes_condition" />
+				<!-- <if test="orgIdList!=null and orgIdList!=''">
+					AND FIND_IN_SET(ORG_ID, OM_ORGANIZATION_QUERY_CHILDREN(#{orgIdList}))>0
+				</if> -->
+	)
+
+	UNION ALL
+		(
+			SELECT
+				ORG_EMPLOYEE.EMP_ID ID,
+				ORG_EMPLOYEE.ORG_ID PID,
+				ORG_EMPLOYEE.EMP_CODE CODE,
+				ORG_EMPLOYEE.EMP_NAME NAME,
+				'EMP' TYPE,
+				'OpIcon03' ICON_SKIN,
+				'0' IS_PARENT,
+				ORG_EMPLOYEE.OPERATOR_ID EXTEND_ATTR
+			FROM
+				ORG_EMPLOYEE
+			WHERE
+				1=1
+				<include refid="queryChildrenTreeNodes_condition" />
+				<!-- <if test="orgIdList!=null and orgIdList!=''">
+					AND FIND_IN_SET(OM_EMPLOYEE.ORG_ID, OM_ORGANIZATION_QUERY_CHILDREN(#{orgIdList}))>0
+				</if> -->
+		)
+	) T
+	ORDER BY T.TYPE, T.CODE
+  </select>
+   <select id="queryTreeNodes" resultMap="ZTreeNodeResultMap" parameterType="map" >
+  	SELECT * FROM (
+  	(
+		SELECT
+			ORG_ID ID,
+			PARENT_ORG_ID PID,
+			ORG_CODE CODE,
+			ORG_NAME NAME,
+			'ORG' TYPE,
+			'OpIcon02' ICON_SKIN,
+			'1' IS_PARENT,
+			'' EXTEND_ATTR
+		FROM
+			ORG_ORGANIZATION
+		WHERE
+			1 = 1
+			<include refid="queryChildrenTreeNodes_condition" />
+	)
+	UNION ALL
+		(
+			SELECT
+				POSITION_ID ID,
+				ORG_ID PID,
+				POSI_CODE CODE,
+				POSI_NAME NAME,
+				'POSI' TYPE,
+				'OpIcon01' ICON_SKIN,
+				'1' IS_PARENT,
+				'' EXTEND_ATTR
+			FROM
+				ORG_POSITION
+			WHERE
+				ifnull(PARENT_POSI_ID,'') = ''
+				<include refid="queryChildrenTreeNodes_condition" />
+		)
+	UNION ALL
+		(
+			SELECT
+				POSITION_ID ID,
+				PARENT_POSI_ID PID,
+				POSI_CODE CODE,
+				POSI_NAME NAME,
+				'POSI' TYPE,
+				'OpIcon01' ICON_SKIN,
+				'1' IS_PARENT,
+				'' EXTEND_ATTR
+			FROM
+				ORG_POSITION
+			WHERE
+				ifnull(PARENT_POSI_ID,'') != ''
+				<include refid="queryChildrenTreeNodes_condition" />
+		)
+	UNION ALL
+		(
+			SELECT
+				ORG_EMPLOYEE.EMP_ID ID,
+				ORG_EMPLOYEE_ORGANIZATION.ORG_ID PID,
+				EMP_CODE CODE,
+				EMP_NAME NAME,
+				'EMP' TYPE,
+				'OpIcon03' ICON_SKIN,
+				'0' IS_PARENT,
+				ORG_EMPLOYEE.OPERATOR_ID EXTEND_ATTR
+			FROM
+				ORG_EMPLOYEE,ORG_EMPLOYEE_ORGANIZATION
+			WHERE
+				ORG_EMPLOYEE.EMP_ID = ORG_EMPLOYEE_ORGANIZATION.EMP_ID
+				<include refid="queryChildrenTreeNodes_condition" />
+		)
+	UNION ALL
+		(
+			SELECT
+				ORG_EMPLOYEE.EMP_ID ID,
+				ORG_EMPLOYEE_ORGANIZATION.POSITION_ID PID,
+				ORG_EMPLOYEE.EMP_CODE CODE,
+				ORG_EMPLOYEE.EMP_NAME NAME,
+				'EMP' TYPE,
+				'OpIcon03' ICON_SKIN,
+				'0' IS_PARENT,
+				ORG_EMPLOYEE.OPERATOR_ID EXTEND_ATTR
+			FROM
+				ORG_EMPLOYEE,ORG_EMPLOYEE_POSITION
+			WHERE
+				ORG_EMPLOYEE.EMP_ID = ORG_EMPLOYEE_POSITION.EMP_ID
+				<include refid="queryChildrenTreeNodes_condition" />
+		)
+	) T
+	ORDER BY T.TYPE, T.CODE
+  </select>
+    <insert id="insertByMap" parameterType="map" >
+    INSERT INTO ORG_EMPLOYEE (EMP_ID, EMP_CODE, OPERATOR_ID, 
+      USER_ID, EMP_NAME, REAL_NAME, 
+      GENDER, BIRTH_DATE, POSITION, 
+      EMP_STATUS, CARD_TYPE, CARD_NO, 
+      IN_DATE, OUT_DATE, O_TEL, 
+      O_ADDRESS, O_ZIP_CODE, O_EMAIL, 
+      FAX_NO, MOBILE_NO, MSN, 
+      H_TEL, H_ADDRESS, H_ZIP_CODE, 
+      P_EMAIL, PARTY, DEGREE, 
+      D_SUPERVISOR, SPECIALTY, WORK_EXP, 
+      REG_DATE, CREATE_TIME, LAST_UPDATE_TIME, 
+      ORG_ID_LIST, ORG_ID, REMARK
+      )
+    VALUES (#{EMP_ID}, #{EMP_CODE}, #{OPERATOR_ID}, 
+      #{USER_ID}, #{EMP_NAME}, #{REAL_NAME}, 
+      #{GENDER}, #{BIRTH_DATE}, #{POSITION}, 
+      #{EMP_STATUS}, #{CARD_TYPE}, #{CARD_NO}, 
+      #{IN_DATE}, #{OUT_DATE}, #{O_TEL}, 
+      #{O_ADDRESS}, #{O_ZIPCODE}, #{O_EMAIL}, 
+      #{FAX_NO}, #{MOBILE_NO}, #{MSN}, 
+      #{H_TEL}, #{H_ADDRESS}, #{H_ZIP_CODE}, 
+      #{P_EMAIL}, #{PARTY}, #{DEGREE}, 
+      #{D_SUPERVISOR}, #{SPECIALTY}, #{WORK_EXP}, 
+      #{REG_DATE}, #{CREATE_TIME}, #{LAST_UPDATE_TIME}, 
+      #{ORG_ID_LIST}, #{ORG_ID}, #{REMARK}
+      )
+  </insert>
+  
+  <update id="updateByMap" parameterType="map" >
+   UPDATE ORG_EMPLOYEE
+    <set >
+      <if test="EMP_CODE != null" >
+        EMP_CODE = #{EMP_CODE},
+      </if>
+      <if test="OPERATOR_ID != null" >
+        OPERATOR_ID = #{OPERATOR_ID},
+      </if>
+      <if test="USER_ID != null" >
+        USER_ID = #{USER_ID},
+      </if>
+      <if test="EMP_NAME != null" >
+        EMP_NAME = #{EMP_NAME},
+      </if>
+      <if test="REAL_NAME != null" >
+        REAL_NAME = #{REAL_NAME},
+      </if>
+      <if test="GENDER != null" >
+        GENDER = #{GENDER},
+      </if>
+      <if test="BIRTH_DATE != null" >
+        BIRTH_DATE = #{BIRTH_DATE},
+      </if>
+      <if test="POSITION != null" >
+        POSITION = #{POSITION},
+      </if>
+      <if test="EMP_STATUS != null" >
+        EMP_STATUS = #{EMP_STATUS},
+      </if>
+      <if test="CARD_TYPE != null" >
+        CARD_TYPE = #{CARD_TYPE},
+      </if>
+      <if test="CARD_NO != null" >
+        CARD_NO = #{CARD_NO},
+      </if>
+      <if test="IN_DATE != null" >
+        IN_DATE = #{IN_DATE},
+      </if>
+      <if test="OUT_DATE != null" >
+        OUT_DATE = #{OUT_DATE},
+      </if>
+      <if test="O_TEL != null" >
+        O_TEL = #{O_TEL},
+      </if>
+      <if test="O_ADDRESS != null" >
+        O_ADDRESS = #{O_ADDRESS},
+      </if>
+      <if test="O_ZIP_CODE != null" >
+        O_ZIP_CODE = #{O_ZIP_CODE},
+      </if>
+      <if test="O_EMAIL != null" >
+        O_EMAIL = #{O_EMAIL},
+      </if>
+      <if test="FAX_NO != null" >
+        FAX_NO = #{FAX_NO},
+      </if>
+      <if test="MOBILE_NO != null" >
+        MOBILE_NO = #{MOBILE_NO},
+      </if>
+      <if test="MSN != null" >
+        MSN = #{MSN},
+      </if>
+      <if test="H_TEL != null" >
+        H_TEL = #{H_TEL},
+      </if>
+      <if test="H_ADDRESS != null" >
+        H_ADDRESS = #{H_ADDRESS},
+      </if>
+      <if test="H_ZIP_CODE != null" >
+        H_ZIP_CODE = #{H_ZIP_CODE},
+      </if>
+      <if test="P_EMAIL != null" >
+        P_EMAIL = #{P_EMAIL},
+      </if>
+      <if test="PARTY != null" >
+        PARTY = #{PARTY},
+      </if>
+      <if test="DEGREE != null" >
+        DEGREE = #{DEGREE},
+      </if>
+      <if test="D_SUPERVISOR != null" >
+        D_SUPERVISOR = #{D_SUPERVISOR},
+      </if>
+      <if test="SPECIALTY != null" >
+        SPECIALTY = #{SPECIALTY},
+      </if>
+      <if test="WORK_EXP != null" >
+        WORK_EXP = #{WORK_EXP},
+      </if>
+      <if test="REG_DATE != null" >
+        REG_DATE = #{REG_DATE},
+      </if>
+      <if test="CREATE_TIME != null" >
+        CREATE_TIME = #{CREATE_TIME},
+      </if>
+      <if test="LAST_UPDATE_TIME != null" >
+        LAST_UPDATE_TIME = #{LAST_UPDATE_TIME},
+      </if>
+      <if test="ORG_ID_LIST != null" >
+        ORG_ID_LIST = #{ORG_ID_LIST},
+      </if>
+      <if test="ORG_ID != null" >
+        ORG_ID = #{ORG_ID},
+      </if>
+      <if test="REMARK != null" >
+        REMARK = #{REMARK},
+      </if>
+    </set>
+    WHERE EMP_ID = #{EMP_ID}
+  </update>
+   <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ORG_EMPLOYEE LEFT JOIN AUTH_OPERATOR on AUTH_OPERATOR.OPERATOR_ID=ORG_EMPLOYEE.OPERATOR_ID
+    WHERE 1=1
+    <if test="OPERATOR_ID!=null">
+    	AND ORG_EMPLOYEE.OPERATOR_ID = #{OPERATOR_ID}
+    </if>
+  </select>
+</mapper>

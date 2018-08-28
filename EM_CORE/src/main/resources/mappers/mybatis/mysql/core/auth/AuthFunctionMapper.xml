@@ -1,0 +1,323 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthFunctionMapper">
+	<resultMap id="BaseResultMap" type="com.em.core.auth.function.entity.AuthFunction">
+		<id column="FUNC_ID" property="funcId" jdbcType="VARCHAR" />
+		<result column="FUNC_GROUP_ID" property="funcGroupId" jdbcType="VARCHAR" />
+		<result column="FUNC_NAME" property="funcName" jdbcType="VARCHAR" />
+		<result column="FUNC_DESC" property="funcDesc" jdbcType="VARCHAR" />
+		<result column="FUNC_ACTION" property="funcAction" jdbcType="VARCHAR" />
+		<result column="PARA_INFO" property="paraInfo" jdbcType="VARCHAR" />
+		<result column="IS_CHECK" property="isCheck" jdbcType="CHAR" />
+		<result column="FUNC_TYPE" property="funcType" jdbcType="VARCHAR" />
+		<result column="IS_MENU" property="isMenu" jdbcType="CHAR" />
+	</resultMap>
+	<resultMap id="AuthFunctionTreeNodeResultMap"
+		type="com.em.core.auth.function.entity.AuthFunctionTreeNode">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PID" property="pId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+		<result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+		<result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+		<result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+		<result column="CHECKED" property="checked" jdbcType="CHAR" />
+
+		<result column="FUNC_ACTION" property="funcAction" jdbcType="VARCHAR" />
+		<result column="PARA_INFO" property="paraInfo" jdbcType="VARCHAR" />
+
+	</resultMap>
+	<sql id="Base_Column_List">
+		FUNC_ID, FUNC_GROUP_ID, FUNC_NAME, FUNC_DESC, FUNC_ACTION,
+		PARA_INFO,
+		IS_CHECK, FUNC_TYPE,
+		IS_MENU
+	</sql>
+	<sql id="queryChildrenTreeNodes_condition">
+		<if test="APP_ID != null and APP_ID !=''">
+			AND APP_ID = #{APP_ID}
+		</if>
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from AUTH_FUNCTION
+		where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+		delete from
+		AUTH_FUNCTION
+		where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+	</delete>
+	<insert id="insert" parameterType="com.em.core.auth.function.entity.AuthFunction">
+		insert into AUTH_FUNCTION
+		(FUNC_ID, FUNC_GROUP_ID, FUNC_NAME,
+		FUNC_DESC, FUNC_ACTION, PARA_INFO,
+		IS_CHECK, FUNC_TYPE, IS_MENU
+		)
+		values (#{funcId,jdbcType=VARCHAR},
+		#{funcGroupId,jdbcType=VARCHAR},
+		#{funcName,jdbcType=VARCHAR},
+		#{funcDesc,jdbcType=VARCHAR}, #{funcAction,jdbcType=VARCHAR},
+		#{paraInfo,jdbcType=VARCHAR},
+		#{isCheck,jdbcType=CHAR},
+		#{funcType,jdbcType=VARCHAR},
+		#{isMenu,jdbcType=CHAR}
+		)
+	</insert>
+	<insert id="insertSelective" parameterType="com.em.core.auth.function.entity.AuthFunction">
+		insert into AUTH_FUNCTION
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="funcId != null">
+				FUNC_ID,
+			</if>
+			<if test="funcGroupId != null">
+				FUNC_GROUP_ID,
+			</if>
+			<if test="funcName != null">
+				FUNC_NAME,
+			</if>
+			<if test="funcDesc != null">
+				FUNC_DESC,
+			</if>
+			<if test="funcAction != null">
+				FUNC_ACTION,
+			</if>
+			<if test="paraInfo != null">
+				PARA_INFO,
+			</if>
+			<if test="isCheck != null">
+				IS_CHECK,
+			</if>
+			<if test="funcType != null">
+				FUNC_TYPE,
+			</if>
+			<if test="isMenu != null">
+				IS_MENU,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="funcId != null">
+				#{funcId,jdbcType=VARCHAR},
+			</if>
+			<if test="funcGroupId != null">
+				#{funcGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="funcName != null">
+				#{funcName,jdbcType=VARCHAR},
+			</if>
+			<if test="funcDesc != null">
+				#{funcDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="funcAction != null">
+				#{funcAction,jdbcType=VARCHAR},
+			</if>
+			<if test="paraInfo != null">
+				#{paraInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="isCheck != null">
+				#{isCheck,jdbcType=CHAR},
+			</if>
+			<if test="funcType != null">
+				#{funcType,jdbcType=VARCHAR},
+			</if>
+			<if test="isMenu != null">
+				#{isMenu,jdbcType=CHAR},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.function.entity.AuthFunction">
+		update AUTH_FUNCTION
+		<set>
+			<if test="funcGroupId != null">
+				FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR},
+			</if>
+			<if test="funcName != null">
+				FUNC_NAME = #{funcName,jdbcType=VARCHAR},
+			</if>
+			<if test="funcDesc != null">
+				FUNC_DESC = #{funcDesc,jdbcType=VARCHAR},
+			</if>
+			<if test="funcAction != null">
+				FUNC_ACTION = #{funcAction,jdbcType=VARCHAR},
+			</if>
+			<if test="paraInfo != null">
+				PARA_INFO = #{paraInfo,jdbcType=VARCHAR},
+			</if>
+			<if test="isCheck != null">
+				IS_CHECK = #{isCheck,jdbcType=CHAR},
+			</if>
+			<if test="funcType != null">
+				FUNC_TYPE = #{funcType,jdbcType=VARCHAR},
+			</if>
+			<if test="isMenu != null">
+				IS_MENU = #{isMenu,jdbcType=CHAR},
+			</if>
+		</set>
+		where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.em.core.auth.function.entity.AuthFunction">
+		update
+		AUTH_FUNCTION
+		set FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR},
+		FUNC_NAME = #{funcName,jdbcType=VARCHAR},
+		FUNC_DESC =
+		#{funcDesc,jdbcType=VARCHAR},
+		FUNC_ACTION =
+		#{funcAction,jdbcType=VARCHAR},
+		PARA_INFO =
+		#{paraInfo,jdbcType=VARCHAR},
+		IS_CHECK = #{isCheck,jdbcType=CHAR},
+		FUNC_TYPE = #{funcType,jdbcType=VARCHAR},
+		IS_MENU =
+		#{isMenu,jdbcType=CHAR}
+		where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+	</update>
+
+	<select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.function.entity.AuthFunction">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_FUNCTION
+		WHERE 1=1
+		<if test="funcAction != null">
+			AND FUNC_ACTION = #{funcAction}
+		</if>
+
+	</select>
+	
+	<select id="queryByMap" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_FUNCTION
+		WHERE 1=1
+		<if test="FUNC_ACTION != null">
+			AND FUNC_ACTION = #{FUNC_ACTION}
+		</if>
+
+	</select>
+	
+	 <select id="queryTreeNodes" resultMap="AuthFunctionTreeNodeResultMap"
+	parameterType="map">
+	SELECT * FROM (
+	(
+	SELECT
+	APP_ID ID,
+	'root' PID,
+	APP_CODE CODE,
+	APP_NAME NAME,
+	'APP' TYPE,
+	'FIcon01' ICON_SKIN,
+	APP_ID EXTEND_ATTR,
+	'1' IS_PARENT,
+	'' FUNC_ACTION,
+	'' PARA_INFO
+	FROM
+	AUTH_APPLICATION
+	WHERE
+	APP_ID != 'root'
+					<include refid="queryChildrenTreeNodes_condition" />
+		)
+	UNION ALL
+		(
+			SELECT
+				FUNC_GROUP_ID ID,
+				APP_ID PID,
+				FUNC_GROUP_SEQ CODE,
+				FUNC_GROUP_NAME NAME,
+				'FUNC_GROUP' TYPE,
+				'FIcon02' ICON_SKIN,
+				APP_ID EXTEND_ATTR,
+				'1' IS_PARENT,
+				'' FUNC_ACTION,
+				'' PARA_INFO
+	
+			FROM
+				AUTH_FUNCTION_GROUP
+			WHERE
+					ifnull(PARENT_GROUP,'') = ''
+					<include refid="queryChildrenTreeNodes_condition" />
+		)
+	UNION ALL
+		(
+			SELECT
+				FUNC_GROUP_ID ID,
+				PARENT_GROUP PID,
+				FUNC_GROUP_SEQ CODE,
+				FUNC_GROUP_NAME NAME,
+				'FUNC_GROUP' TYPE,
+				'FIcon02' ICON_SKIN,
+				APP_ID EXTEND_ATTR,
+				'1' IS_PARENT,
+				'' FUNC_ACTION,
+				'' PARA_INFO
+			FROM
+				AUTH_FUNCTION_GROUP
+			WHERE ifnull(PARENT_GROUP,'') != ''
+			<include refid="queryChildrenTreeNodes_condition" />
+		)
+	UNION ALL
+		(
+			SELECT
+				FUNC_ID ID,
+				AUTH_FUNCTION.FUNC_GROUP_ID PID,
+				FUNC_DESC CODE,
+				FUNC_NAME NAME,
+				'FUNCTION' TYPE,
+				'RFicon03' ICON_SKIN,
+				APP_ID EXTEND_ATTR,
+				'0' IS_PARENT,
+				FUNC_ACTION,
+				IFNULL(PARA_INFO,'') PARA_INFO
+			FROM
+				AUTH_FUNCTION
+			INNER JOIN
+				AUTH_FUNCTION_GROUP
+			ON AUTH_FUNCTION.FUNC_GROUP_ID = AUTH_FUNCTION_GROUP.FUNC_GROUP_ID
+			WHERE
+				1=1
+				<include refid="queryChildrenTreeNodes_condition" />
+				<if test="isMenu != null and isMenu !=''">
+					AND AUTH_FUNCTION.IS_MENU = #{isMenu}
+				</if>
+		)
+	) T
+	ORDER BY T.TYPE, T.CODE
+  </select>
+  
+  <select id="queryPermitted" resultType="map" parameterType="map">
+  		SELECT T.FUNC_ID,T.FUNC_ACTION FROM (
+			SELECT
+				AUTH_FUNCTION.FUNC_ID,
+				AUTH_FUNCTION.FUNC_ACTION
+			FROM
+				AUTH_FUNCTION
+			<if test="operatorId != null and operatorId!='superadmin'" >
+			INNER JOIN AUTH_ROLE_FUNCTION ON AUTH_FUNCTION.FUNC_ID = AUTH_ROLE_FUNCTION.FUNC_ID
+			INNER JOIN AUTH_OPERATOR_ROLE ON AUTH_OPERATOR_ROLE.ROLE_ID = AUTH_ROLE_FUNCTION.ROLE_ID
+			</if>
+			WHERE
+				1=1
+				<if test="operatorId != null and operatorId!='superadmin'" >
+					AND AUTH_OPERATOR_ROLE.OPERATOR_ID = #{operatorId}
+				</if>
+			GROUP BY AUTH_FUNCTION.FUNC_ID,AUTH_FUNCTION.FUNC_ACTION
+			UNION ALL
+				SELECT
+					AUTH_FUNCTION.FUNC_ID,
+					AUTH_FUNCTION.FUNC_ACTION
+				FROM
+					AUTH_OPERATOR_FUNCTION
+				INNER JOIN AUTH_FUNCTION
+				ON AUTH_OPERATOR_FUNCTION.FUNC_ID = AUTH_FUNCTION.FUNC_ID
+				WHERE
+					1=1
+					<if test="operatorId != null and operatorId != 'superadmin'" >
+						AND AUTH_OPERATOR_FUNCTION.OPERATOR_ID = #{operatorId}
+					</if>
+		) T
+		GROUP BY T.FUNC_ID,T.FUNC_ACTION
+  </select>
+
+</mapper>

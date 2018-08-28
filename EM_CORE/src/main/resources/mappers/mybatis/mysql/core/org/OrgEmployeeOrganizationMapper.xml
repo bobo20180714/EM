@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgEmployeeOrganizationMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.employee.organization.entity.OrgEmployeeOrganization" >
+    <id column="EMP_ID" property="empId" jdbcType="VARCHAR" />
+    <id column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="IS_MAIN" property="isMain" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EMP_ID, ORG_ID, IS_MAIN
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="string" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORG_EMPLOYEE_ORGANIZATION
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.em.core.org.employee.organization.entity.OrgEmployeeOrganization" >
+    delete from ORG_EMPLOYEE_ORGANIZATION
+    where 1=1
+    <if test="empId != null" >
+    	AND ORG_ID = #{empId}
+    </if>
+    <if test="orgId != null" >
+    	AND EMP_ID = #{orgId}
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.employee.organization.entity.OrgEmployeeOrganization" >
+    insert into ORG_EMPLOYEE_ORGANIZATION (EMP_ID, ORG_ID, IS_MAIN
+      )
+    values (#{empId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{isMain,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.employee.organization.entity.OrgEmployeeOrganization" >
+    insert into ORG_EMPLOYEE_ORGANIZATION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        EMP_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="isMain != null" >
+        IS_MAIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="isMain != null" >
+        #{isMain,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.org.employee.organization.entity.OrgEmployeeOrganization" >
+    update ORG_EMPLOYEE_ORGANIZATION
+    <set >
+      <if test="isMain != null" >
+        IS_MAIN = #{isMain,jdbcType=CHAR},
+      </if>
+    </set>
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+      and ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.org.employee.organization.entity.OrgEmployeeOrganization" >
+    update ORG_EMPLOYEE_ORGANIZATION
+    set IS_MAIN = #{isMain,jdbcType=CHAR}
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+      and ORG_ID = #{orgId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgEmployeePositionMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    <id column="EMP_ID" property="empId" jdbcType="VARCHAR" />
+    <id column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
+    <result column="IS_MAIN" property="isMain" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    EMP_ID, POSITION_ID, IS_MAIN
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORG_EMPLOYEE_POSITION
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+      and POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    delete from ORG_EMPLOYEE_POSITION
+    where 
+    <if test="empId != null" >
+        EMP_ID = #{empId,jdbcType=VARCHAR}
+      </if>
+      <if test="positionId != null" >
+        and POSITION_ID = #{positionId,jdbcType=VARCHAR}
+      </if>       
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    insert into ORG_EMPLOYEE_POSITION (EMP_ID, POSITION_ID, IS_MAIN
+      )
+    values (#{empId,jdbcType=VARCHAR}, #{positionId,jdbcType=VARCHAR}, #{isMain,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    insert into ORG_EMPLOYEE_POSITION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        EMP_ID,
+      </if>
+      <if test="positionId != null" >
+        POSITION_ID,
+      </if>
+      <if test="isMain != null" >
+        IS_MAIN,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="isMain != null" >
+        #{isMain,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    update ORG_EMPLOYEE_POSITION
+    <set >
+      <if test="isMain != null" >
+        IS_MAIN = #{isMain,jdbcType=CHAR},
+      </if>
+    </set>
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+      and POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.org.employee.position.entity.OrgEmployeePosition" >
+    update ORG_EMPLOYEE_POSITION
+    set IS_MAIN = #{isMain,jdbcType=CHAR}
+    where EMP_ID = #{empId,jdbcType=VARCHAR}
+      and POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </update>
+</mapper>

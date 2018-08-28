@@ -1,0 +1,298 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthOperatorMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.auth.operator.entity.AuthOperator" >
+    <id column="OPERATOR_ID" property="operatorId" jdbcType="VARCHAR" />
+    <result column="USER_ID" property="userId" jdbcType="VARCHAR" />
+    <result column="PASSWORD" property="password" jdbcType="VARCHAR" />
+    <result column="INVAL_DATE" property="invalDate" jdbcType="VARCHAR" />
+    <result column="OPERATOR_NAME" property="operatorName" jdbcType="VARCHAR" />
+    <result column="AUTH_MODE" property="authMode" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="UNLOCK_TIME" property="unlockTime" jdbcType="VARCHAR" />
+    <result column="MENU_TYPE" property="menuType" jdbcType="VARCHAR" />
+    <result column="LAST_LOGIN" property="lastLogin" jdbcType="VARCHAR" />
+    <result column="ERR_COUNT" property="errCount" jdbcType="DECIMAL" />
+    <result column="START_DATE" property="startDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="VALID_TIME" property="validTime" jdbcType="VARCHAR" />
+    <result column="MAC_CODE" property="macCode" jdbcType="VARCHAR" />
+    <result column="IP_ADDRESS" property="ipAddress" jdbcType="VARCHAR" />
+    <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    OPERATOR_ID, USER_ID, PASSWORD, INVAL_DATE, OPERATOR_NAME, AUTH_MODE, STATUS, UNLOCK_TIME, 
+    MENU_TYPE, LAST_LOGIN, ERR_COUNT, START_DATE, END_DATE, VALID_TIME, MAC_CODE, IP_ADDRESS, 
+    EMAIL
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from AUTH_OPERATOR
+    where OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from AUTH_OPERATOR
+    where OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.auth.operator.entity.AuthOperator" >
+    insert into AUTH_OPERATOR (OPERATOR_ID, USER_ID, PASSWORD, 
+      INVAL_DATE, OPERATOR_NAME, AUTH_MODE, 
+      STATUS, UNLOCK_TIME, MENU_TYPE, 
+      LAST_LOGIN, ERR_COUNT, START_DATE, 
+      END_DATE, VALID_TIME, MAC_CODE, 
+      IP_ADDRESS, EMAIL)
+    values (#{operatorId,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
+      #{invalDate,jdbcType=VARCHAR}, #{operatorName,jdbcType=VARCHAR}, #{authMode,jdbcType=VARCHAR}, 
+      #{status,jdbcType=VARCHAR}, #{unlockTime,jdbcType=VARCHAR}, #{menuType,jdbcType=VARCHAR}, 
+      #{lastLogin,jdbcType=VARCHAR}, #{errCount,jdbcType=DECIMAL}, #{startDate,jdbcType=VARCHAR}, 
+      #{endDate,jdbcType=VARCHAR}, #{validTime,jdbcType=VARCHAR}, #{macCode,jdbcType=VARCHAR}, 
+      #{ipAddress,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.auth.operator.entity.AuthOperator" >
+    insert into AUTH_OPERATOR
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operatorId != null" >
+        OPERATOR_ID,
+      </if>
+      <if test="userId != null" >
+        USER_ID,
+      </if>
+      <if test="password != null" >
+        PASSWORD,
+      </if>
+      <if test="invalDate != null" >
+        INVAL_DATE,
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME,
+      </if>
+      <if test="authMode != null" >
+        AUTH_MODE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="unlockTime != null" >
+        UNLOCK_TIME,
+      </if>
+      <if test="menuType != null" >
+        MENU_TYPE,
+      </if>
+      <if test="lastLogin != null" >
+        LAST_LOGIN,
+      </if>
+      <if test="errCount != null" >
+        ERR_COUNT,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="validTime != null" >
+        VALID_TIME,
+      </if>
+      <if test="macCode != null" >
+        MAC_CODE,
+      </if>
+      <if test="ipAddress != null" >
+        IP_ADDRESS,
+      </if>
+      <if test="email != null" >
+        EMAIL,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null" >
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="invalDate != null" >
+        #{invalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorName != null" >
+        #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="authMode != null" >
+        #{authMode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="unlockTime != null" >
+        #{unlockTime,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null" >
+        #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogin != null" >
+        #{lastLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="errCount != null" >
+        #{errCount,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="validTime != null" >
+        #{validTime,jdbcType=VARCHAR},
+      </if>
+      <if test="macCode != null" >
+        #{macCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null" >
+        #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        #{email,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.operator.entity.AuthOperator" >
+    update AUTH_OPERATOR
+    <set >
+      <if test="userId != null" >
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="password != null" >
+        PASSWORD = #{password,jdbcType=VARCHAR},
+      </if>
+      <if test="invalDate != null" >
+        INVAL_DATE = #{invalDate,jdbcType=VARCHAR},
+      </if>
+      <if test="operatorName != null" >
+        OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      </if>
+      <if test="authMode != null" >
+        AUTH_MODE = #{authMode,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="unlockTime != null" >
+        UNLOCK_TIME = #{unlockTime,jdbcType=VARCHAR},
+      </if>
+      <if test="menuType != null" >
+        MENU_TYPE = #{menuType,jdbcType=VARCHAR},
+      </if>
+      <if test="lastLogin != null" >
+        LAST_LOGIN = #{lastLogin,jdbcType=VARCHAR},
+      </if>
+      <if test="errCount != null" >
+        ERR_COUNT = #{errCount,jdbcType=DECIMAL},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="validTime != null" >
+        VALID_TIME = #{validTime,jdbcType=VARCHAR},
+      </if>
+      <if test="macCode != null" >
+        MAC_CODE = #{macCode,jdbcType=VARCHAR},
+      </if>
+      <if test="ipAddress != null" >
+        IP_ADDRESS = #{ipAddress,jdbcType=VARCHAR},
+      </if>
+      <if test="email != null" >
+        EMAIL = #{email,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.auth.operator.entity.AuthOperator" >
+    update AUTH_OPERATOR
+    set USER_ID = #{userId,jdbcType=VARCHAR},
+      PASSWORD = #{password,jdbcType=VARCHAR},
+      INVAL_DATE = #{invalDate,jdbcType=VARCHAR},
+      OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR},
+      AUTH_MODE = #{authMode,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      UNLOCK_TIME = #{unlockTime,jdbcType=VARCHAR},
+      MENU_TYPE = #{menuType,jdbcType=VARCHAR},
+      LAST_LOGIN = #{lastLogin,jdbcType=VARCHAR},
+      ERR_COUNT = #{errCount,jdbcType=DECIMAL},
+      START_DATE = #{startDate,jdbcType=VARCHAR},
+      END_DATE = #{endDate,jdbcType=VARCHAR},
+      VALID_TIME = #{validTime,jdbcType=VARCHAR},
+      MAC_CODE = #{macCode,jdbcType=VARCHAR},
+      IP_ADDRESS = #{ipAddress,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR}
+    where OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+  </update>
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.operator.entity.AuthOperator" >
+    select 
+    <include refid="Base_Column_List" />
+    from AUTH_OPERATOR
+    where 1=1
+     <if test="userId != null" >
+     and USER_ID = #{userId,jdbcType=VARCHAR}
+      </if>
+      <if test="password != null" >
+      and  PASSWORD = #{password,jdbcType=VARCHAR}
+      </if>
+      <if test="invalDate != null" >
+      and  INVAL_DATE = #{invalDate,jdbcType=VARCHAR}
+      </if>
+      <if test="operatorName != null" >
+      and  OPERATOR_NAME = #{operatorName,jdbcType=VARCHAR}
+      </if>
+      <if test="authMode != null" >
+       and AUTH_MODE = #{authMode,jdbcType=VARCHAR}
+      </if>
+      <if test="status != null" >
+       and STATUS = #{status,jdbcType=VARCHAR}
+      </if>
+      <if test="unlockTime != null" >
+       and UNLOCK_TIME = #{unlockTime,jdbcType=VARCHAR}
+      </if>
+      <if test="menuType != null" >
+       and MENU_TYPE = #{menuType,jdbcType=VARCHAR}
+      </if>
+      <if test="lastLogin != null" >
+       and LAST_LOGIN = #{lastLogin,jdbcType=VARCHAR}
+      </if>
+      <if test="errCount != null" >
+       and ERR_COUNT = #{errCount,jdbcType=DECIMAL}
+      </if>
+      <if test="startDate != null" >
+       and START_DATE = #{startDate,jdbcType=VARCHAR}
+      </if>
+      <if test="endDate != null" >
+       and END_DATE = #{endDate,jdbcType=VARCHAR}
+      </if>
+      <if test="validTime != null" >
+       and VALID_TIME = #{validTime,jdbcType=VARCHAR}
+      </if>
+      <if test="macCode != null" >
+       and MAC_CODE = #{macCode,jdbcType=VARCHAR}
+      </if>
+      <if test="ipAddress != null" >
+       and IP_ADDRESS = #{ipAddress,jdbcType=VARCHAR}
+      </if>
+      <if test="email != null" >
+       and EMAIL = #{email,jdbcType=VARCHAR}
+      </if>
+       <if test="operatorId != null" >
+       and OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+      </if>
+  </select>
+  <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    select 
+    <include refid="Base_Column_List" />
+    from AUTH_OPERATOR
+    where OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+  </select>
+</mapper>

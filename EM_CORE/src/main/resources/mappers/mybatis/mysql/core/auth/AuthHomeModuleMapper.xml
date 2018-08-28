@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthHomeModuleMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.auth.home.module.entity.AuthHomeModule" >
+    <id column="HOME_MODULE_ID" property="homeModuleId" jdbcType="VARCHAR" />
+    <result column="MODULE_TYPE" property="moduleType" jdbcType="VARCHAR" />
+    <result column="MODULE_NAME" property="moduleName" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="IN_USE" property="inUse" jdbcType="CHAR" />
+    <result column="CODE" property="code" jdbcType="VARCHAR" />
+    <result column="DATA_COL" property="dataCol" jdbcType="VARCHAR" />
+    <result column="DATA_ROW" property="dataRow" jdbcType="VARCHAR" />
+    <result column="DATA_SIZEX" property="dataSizex" jdbcType="VARCHAR" />
+    <result column="DATA_SIZEY" property="dataSizey" jdbcType="VARCHAR" />
+   
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.em.core.auth.home.module.entity.AuthHomeModuleWithBLOBs" extends="BaseResultMap" >
+    <result column="HTML_CONTENT" property="htmlContent" jdbcType="LONGVARCHAR" />
+    <result column="PARAM_JSON" property="paramJson" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <resultMap id="ZTreeNodeResultMap" type="com.em.common.zTree.ZTreeNode" >
+    <id column="ID" property="id" jdbcType="VARCHAR" />
+    <result column="PID" property="pId" jdbcType="VARCHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+    <result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+    <result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+    <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    HOME_MODULE_ID, MODULE_TYPE, MODULE_NAME, APP_ID, IN_USE, CODE, DATA_COL, DATA_ROW, 
+    DATA_SIZEX, DATA_SIZEY
+  </sql>
+  <sql id="Blob_Column_List" >
+    HTML_CONTENT, PARAM_JSON
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from AUTH_HOME_MODULE
+    where HOME_MODULE_ID = #{homeModuleId,jdbcType=VARCHAR}
+  </select>
+  <select id="count" resultType="int" parameterType="map">
+
+		SELECT
+
+		COUNT(*)
+
+		FROM AUTH_HOME_MODULE
+
+		WHERE 1=1
+
+		<if test="LIKE_STR != null">
+
+			AND (${LIKE_STR})
+
+		</if>
+
+	</select>
+  
+   <select id="queryPage" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_HOME_MODULE
+		WHERE 1=1
+		<!-- ORDER BY CREATE_TIME DESC -->
+	</select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from AUTH_HOME_MODULE
+    where HOME_MODULE_ID = #{homeModuleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.auth.home.module.entity.AuthHomeModuleWithBLOBs" >
+    insert into AUTH_HOME_MODULE (HOME_MODULE_ID, MODULE_TYPE, MODULE_NAME, 
+      APP_ID, IN_USE, CODE, DATA_COL, 
+      DATA_ROW, DATA_SIZEX, DATA_SIZEY, 
+      HTML_CONTENT, PARAM_JSON)
+    values (#{homeModuleId,jdbcType=VARCHAR}, #{moduleType,jdbcType=VARCHAR}, #{moduleName,jdbcType=VARCHAR}, 
+      #{appId,jdbcType=VARCHAR}, #{inUse,jdbcType=CHAR}, #{code,jdbcType=VARCHAR}, #{dataCol,jdbcType=VARCHAR}, 
+      #{dataRow,jdbcType=VARCHAR}, #{dataSizex,jdbcType=VARCHAR}, #{dataSizey,jdbcType=VARCHAR}, 
+      #{htmlContent,jdbcType=LONGVARCHAR}, #{paramJson,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.auth.home.module.entity.AuthHomeModuleWithBLOBs" >
+    insert into AUTH_HOME_MODULE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="homeModuleId != null" >
+        HOME_MODULE_ID,
+      </if>
+      <if test="moduleType != null" >
+        MODULE_TYPE,
+      </if>
+      <if test="moduleName != null" >
+        MODULE_NAME,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="inUse != null" >
+        IN_USE,
+      </if>
+      <if test="code != null" >
+        CODE,
+      </if>
+      <if test="dataCol != null" >
+        DATA_COL,
+      </if>
+      <if test="dataRow != null" >
+        DATA_ROW,
+      </if>
+      <if test="dataSizex != null" >
+        DATA_SIZEX,
+      </if>
+      <if test="dataSizey != null" >
+        DATA_SIZEY,
+      </if>
+      <if test="htmlContent != null" >
+        HTML_CONTENT,
+      </if>
+      <if test="paramJson != null" >
+        PARAM_JSON,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="homeModuleId != null" >
+        #{homeModuleId,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleType != null" >
+        #{moduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null" >
+        #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="inUse != null" >
+        #{inUse,jdbcType=CHAR},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="dataCol != null" >
+        #{dataCol,jdbcType=VARCHAR},
+      </if>
+      <if test="dataRow != null" >
+        #{dataRow,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSizex != null" >
+        #{dataSizex,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSizey != null" >
+        #{dataSizey,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="paramJson != null" >
+        #{paramJson,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.home.module.entity.AuthHomeModuleWithBLOBs" >
+    update AUTH_HOME_MODULE
+    <set >
+      <if test="moduleType != null" >
+        MODULE_TYPE = #{moduleType,jdbcType=VARCHAR},
+      </if>
+      <if test="moduleName != null" >
+        MODULE_NAME = #{moduleName,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="inUse != null" >
+        IN_USE = #{inUse,jdbcType=CHAR},
+      </if>
+      <if test="code != null" >
+        CODE = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="dataCol != null" >
+        DATA_COL = #{dataCol,jdbcType=VARCHAR},
+      </if>
+      <if test="dataRow != null" >
+        DATA_ROW = #{dataRow,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSizex != null" >
+        DATA_SIZEX = #{dataSizex,jdbcType=VARCHAR},
+      </if>
+      <if test="dataSizey != null" >
+        DATA_SIZEY = #{dataSizey,jdbcType=VARCHAR},
+      </if>
+      <if test="htmlContent != null" >
+        HTML_CONTENT = #{htmlContent,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="paramJson != null" >
+        PARAM_JSON = #{paramJson,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where HOME_MODULE_ID = #{homeModuleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.em.core.auth.home.module.entity.AuthHomeModuleWithBLOBs" >
+    update AUTH_HOME_MODULE
+    set MODULE_TYPE = #{moduleType,jdbcType=VARCHAR},
+      MODULE_NAME = #{moduleName,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      IN_USE = #{inUse,jdbcType=CHAR},
+      CODE = #{code,jdbcType=VARCHAR},
+      DATA_COL = #{dataCol,jdbcType=VARCHAR},
+      DATA_ROW = #{dataRow,jdbcType=VARCHAR},
+      DATA_SIZEX = #{dataSizex,jdbcType=VARCHAR},
+      DATA_SIZEY = #{dataSizey,jdbcType=VARCHAR},
+      HTML_CONTENT = #{htmlContent,jdbcType=LONGVARCHAR},
+      PARAM_JSON = #{paramJson,jdbcType=LONGVARCHAR}
+    where HOME_MODULE_ID = #{homeModuleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.auth.home.module.entity.AuthHomeModule" >
+    update AUTH_HOME_MODULE
+    set MODULE_TYPE = #{moduleType,jdbcType=VARCHAR},
+      MODULE_NAME = #{moduleName,jdbcType=VARCHAR},
+      APP_ID = #{appId,jdbcType=VARCHAR},
+      IN_USE = #{inUse,jdbcType=CHAR},
+      CODE = #{code,jdbcType=VARCHAR},
+      DATA_COL = #{dataCol,jdbcType=VARCHAR},
+      DATA_ROW = #{dataRow,jdbcType=VARCHAR},
+      DATA_SIZEX = #{dataSizex,jdbcType=VARCHAR},
+      DATA_SIZEY = #{dataSizey,jdbcType=VARCHAR}
+    where HOME_MODULE_ID = #{homeModuleId,jdbcType=VARCHAR}
+  </update>
+  <delete id="batchDelete" parameterType="map" >
+    DELETE FROM AUTH_HOME_MODULE<!-- 关联表已做删除触发器,会自动删除 -->
+    WHERE 1=2
+    <if test="HOME_MODULE_IDS != null" >
+     OR   HOME_MODULE_ID IN (${HOME_MODULE_IDS})
+    </if>
+  </delete>
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.home.module.entity.AuthHomeModule" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_HOME_MODULE
+    WHERE 1=1
+  </select>
+  <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_HOME_MODULE
+    WHERE 1=1
+  </select>
+  <select id="queryNodesForRole" resultMap="ZTreeNodeResultMap" parameterType="map" >
+  	SELECT * FROM (
+		SELECT
+			AUTH_HOME_MODULE.HOME_MODULE_ID ID,
+			<!-- PARENT_ID PID, -->
+			CODE CODE,
+			MODULE_NAME NAME,
+			MODULE_TYPE TYPE,
+			'OpIcon02' ICON_SKIN,
+			'0' IS_PARENT,
+			CASE WHEN AUTH_ROLE_HOME_MODULE.ROLE_ID IS NOT NULL THEN '1' ELSE '0' END AS CHECKED
+		FROM
+			AUTH_HOME_MODULE
+		LEFT JOIN AUTH_ROLE_HOME_MODULE
+			ON AUTH_ROLE_HOME_MODULE.HOME_MODULE_ID = AUTH_HOME_MODULE.HOME_MODULE_ID
+			AND AUTH_ROLE_HOME_MODULE.ROLE_ID = #{ROLE_ID}
+
+	) T
+	ORDER BY T.TYPE, T.CODE
+  </select>
+   <delete id="deleteRoleHomeModule" parameterType="map" >
+    DELETE FROM AUTH_ROLE_HOME_MODULE
+    WHERE ROLE_ID = #{ROLE_ID}
+      <!-- AND FUNC_ID = #{FUNC_ID} -->
+  </delete>
+    <insert id="batchInsertRoleHomeModule" parameterType="List">
+	INSERT INTO AUTH_ROLE_HOME_MODULE (ROLE_ID, HOME_MODULE_ID) VALUES
+	<foreach collection="list" item="record" index="index" separator=",">
+		(#{record.ROLE_ID}, #{record.HOME_MODULE_ID})
+	</foreach>
+  </insert>
+   <!-- OperHomeModule ↓ -->
+  <select id="queryOperHomeModule" resultType="map" parameterType="map" >
+  		SELECT
+			MODULE.HOME_MODULE_ID,
+			MODULE.MODULE_TYPE,
+			MODULE.MODULE_NAME,
+			MODULE.HTML_CONTENT,
+			MODULE.PARAM_JSON,
+			MODULE.APP_ID,
+			MODULE.IN_USE,
+			MODULE.CODE,
+			OPER.DATA_COL,
+			OPER.DATA_ROW,
+			OPER.DATA_SIZEX,
+			OPER.DATA_SIZEY
+		FROM
+			AUTH_HOME_MODULE AS MODULE,
+			AUTH_OPERATOR_HOME_MODULE AS OPER
+		WHERE 
+			MODULE.HOME_MODULE_ID = OPER.HOME_MODULE_ID
+			AND OPER.OPERATOR_ID = #{OPERATOR_ID}
+			AND MODULE.HOME_MODULE_ID IN 
+			(
+					SELECT HOME_MODULE_ID FROM AUTH_ROLE_HOME_MODULE
+					INNER JOIN AUTH_OPERATOR_ROLE
+					ON AUTH_ROLE_HOME_MODULE.ROLE_ID = AUTH_OPERATOR_ROLE.ROLE_ID
+					AND AUTH_OPERATOR_ROLE.OPERATOR_ID= #{OPERATOR_ID}
+					GROUP BY HOME_MODULE_ID
+			)
+  </select>
+    <select id="queryOperRoleHomeModule" resultType="map" parameterType="map" >
+  		SELECT
+			MODULE.HOME_MODULE_ID,
+			MODULE.MODULE_TYPE,
+			MODULE.MODULE_NAME,
+			MODULE.HTML_CONTENT,
+			MODULE.PARAM_JSON,
+			MODULE.APP_ID,
+			MODULE.IN_USE,
+			MODULE.CODE,
+			MODULE.DATA_COL,
+			MODULE.DATA_ROW,
+			MODULE.DATA_SIZEX,
+			MODULE.DATA_SIZEY
+		FROM
+			AUTH_HOME_MODULE AS MODULE
+		WHERE
+			MODULE.HOME_MODULE_ID IN 
+		(
+				SELECT HOME_MODULE_ID FROM AUTH_ROLE_HOME_MODULE
+				INNER JOIN AUTH_OPERATOR_ROLE
+				ON AUTH_ROLE_HOME_MODULE.ROLE_ID = AUTH_OPERATOR_ROLE.ROLE_ID
+				AND AUTH_OPERATOR_ROLE.OPERATOR_ID= #{OPERATOR_ID}
+				GROUP BY HOME_MODULE_ID
+		)
+  </select>
+  <delete id="deleteOperHomeModule" parameterType="map" >
+    DELETE FROM AUTH_OPERATOR_HOME_MODULE
+    WHERE OPERATOR_ID = #{OPERATOR_ID}
+      <!-- AND FUNC_ID = #{FUNC_ID} -->
+  </delete>
+   <insert id="batchInsertOperHomeModule" parameterType="List">
+	INSERT INTO AUTH_OPERATOR_HOME_MODULE (OPERATOR_ID,HOME_MODULE_ID,DATA_COL,DATA_ROW,DATA_SIZEX,DATA_SIZEY) VALUES
+	<foreach collection="list" item="record" index="index" separator=",">
+		(#{record.OPERATOR_ID},#{record.HOME_MODULE_ID},#{record.DATA_COL},#{record.DATA_ROW},#{record.DATA_SIZEX},#{record.DATA_SIZEY})
+	</foreach>
+  </insert>
+</mapper>

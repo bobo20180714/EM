@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthMenuCustomMapper">
+	<resultMap id="BaseResultMap"
+		type="com.em.core.auth.function.group.entity.AuthFunctionGroup">
+		<id column="OPERATOR_ID" property="operatorId" jdbcType="VARCHAR" />
+		<id column="MENU_OPERATOR_CUSTOM_CODE" property="menuOperatorCustomCode"
+			jdbcType="VARCHAR" />
+		<result column="MENU_IDS" property="menuIds" jdbcType="VARCHAR" />
+		<result column="IS_USE" property="isUse" jdbcType="VARCHAR" />
+	</resultMap>
+
+	<resultMap id="MenuTreeNodeResultMap"
+		type="com.em.core.auth.menu.entity.AuthMenuTreeNode">
+		<id column="ID" property="id" jdbcType="VARCHAR" />
+		<result column="PID" property="pId" jdbcType="VARCHAR" />
+		<result column="NAME" property="name" jdbcType="VARCHAR" />
+		<result column="TYPE" property="type" jdbcType="VARCHAR" />
+		<result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+		<result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+		<result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+		<!-- <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" 
+			/> -->
+
+		<result column="MENU_LABEL" property="menuLabel" jdbcType="VARCHAR" />
+		<result column="MENU_ACTION" property="menuAction" jdbcType="VARCHAR" />
+		<result column="MENU_PARAM" property="menuParam" jdbcType="VARCHAR" />
+		<result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+		<result column="MENU_CSS" property="menuCss" jdbcType="VARCHAR" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		OPERATOR_ID, MENU_OPERATOR_CUSTOM_CODE, MENU_IDS, IS_USE
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from AUTH_CUSTOM_MENU
+		where MENU_ID = #{menuId,jdbcType=VARCHAR}
+	</select>
+	<select id="query" resultMap="BaseResultMap"
+		parameterType="com.em.core.auth.menu.custom.entity.AuthMenuCustom">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_CUSTOM_MENU
+		WHERE 1=1
+		<if test="operatorId != null">
+			AND OPERATOR_ID = #{operatorId}
+		</if>
+		<if test="menuOperatorCustomCode != null">
+			AND MENU_OPERATOR_CUSTOM_CODE = #{menuOperatorCustomCode}
+		</if>
+		<if test="isUse!= null">
+			AND IS_USE = #{isUse}
+		</if>
+	</select>
+	<select id="queryByMap" resultMap="BaseResultMap"
+		parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_CUSTOM_MENU
+		WHERE 1=1
+		<if test="OPERATOR_ID != null">
+			AND OPERATOR_ID = #{OPERATOR_ID}
+		</if>
+		<if test="MENU_OPERATOR_CUSTOM_CODE != null">
+			AND MENU_OPERATOR_CUSTOM_CODE = #{MENU_OPERATOR_CUSTOM_CODE}
+		</if>
+		<if test="IS_USE!= null">
+			AND IS_USE = #{IS_USE}
+		</if>
+	</select>
+
+	<select id="queryPage" resultMap="BaseResultMap" parameterType="map">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM AUTH_CUSTOM_MENU
+		WHERE 1=1
+		<!-- ORDER BY CREATE_TIME DESC -->
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="string">
+		DELETE
+		FROM
+		AUTH_CUSTOM_MENU
+		WHERE
+		OPERATOR_ID = #{OPERATOR_ID} AND MENU_OPERATOR_CUSTOM_CODE =
+		#{MENU_OPERATOR_CUSTOM_CODE}
+		<!-- WHERE FIND_IN_SET(MENU_ID, AC_MENU_QUERY_CHILDREN(#{MENU_ID}))>0 -->
+	</delete>
+	<insert id="insert"
+		parameterType="com.em.core.auth.menu.custom.entity.AuthMenuCustom">
+		INSERT INTO AUTH_CUSTOM_MENU
+		(OPERATOR_ID,MENU_OPERATOR_CUSTOM_CODE,MENU_IDS,IS_USE)
+		VALUES (#{operatorId}, #{menuOperatorCustomCode}, #{menuIds},
+		#{isUse})
+	</insert>
+
+	<update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.menu.entity.AuthMenu">
+		UPDATE AUTH_CUSTOM_MENU
+		<set>
+			<if test="menuOperatorCustomCode != null">
+				MENU_OPERATOR_CUSTOM_CODE = #{menuOperatorCustomCode},
+			</if>
+			<if test="menuIds != null">
+				MENU_IDS = #{menuIds},
+			</if>
+			<if test="isUse != null">
+				IS_USE = #{isUse}
+			</if>
+		</set>
+		WHERE OPERATOR_ID = #{operatorId}
+		<if test="orgMenuOperatorCustomCode != null">
+			AND MENU_OPERATOR_CUSTOM_CODE = #{orgMenuOperatorCustomCode}
+		</if>
+		<if test="orgMenuOperatorCustomCode == null">
+			AND MENU_OPERATOR_CUSTOM_CODE = #{orgMenuOperatorCustomCode}
+		</if>
+	</update>
+	
+	<update id="updateByMap" parameterType="map" >
+   UPDATE AUTH_CUSTOM_MENU
+    <set >
+      <if test="MENU_OPERATOR_CUSTOM_CODE != null" >
+        MENU_OPERATOR_CUSTOM_CODE = #{MENU_OPERATOR_CUSTOM_CODE},
+      </if>
+      <if test="MENU_IDS != null" >
+        MENU_IDS = #{MENU_IDS},
+      </if>
+      <if test="IS_USE != null" >
+        IS_USE = #{IS_USE}
+      </if>
+    </set>
+    WHERE OPERATOR_ID = #{OPERATOR_ID} 
+    <if test="ORG_MENU_OPERATOR_CUSTOM_CODE != null" >
+         AND MENU_OPERATOR_CUSTOM_CODE = #{ORG_MENU_OPERATOR_CUSTOM_CODE}
+      </if>
+       <if test="ORG_MENU_OPERATOR_CUSTOM_CODE == null" >
+          AND MENU_OPERATOR_CUSTOM_CODE = #{MENU_OPERATOR_CUSTOM_CODE}
+      </if>
+  </update>
+
+	<select id="queryPermittedTreeNodes" resultMap="MenuTreeNodeResultMap"
+		parameterType="string">
+		SELECT * FROM (
+		(
+		SELECT
+		APP_ID ID,
+		'-1' PID,
+		APP_CODE CODE,
+		'菜单管理' NAME,
+		'ROOT' TYPE,
+		'FRoot' ICON_SKIN,
+		'1' IS_PARENT,
+		APP_ID EXTEND_ATTR,
+		APP_NAME MENU_LABEL,
+		'' MENU_ACTION,
+		'' MENU_PARAM,
+		'0' IS_LEAF,
+		'' MENU_CSS
+		FROM
+		AUTH_APPLICATION
+		WHERE
+		(
+		APP_ID = 'root'
+		)
+		)
+		UNION ALL
+		(
+		SELECT
+		APP_ID ID,
+		'root' PID,
+		APP_CODE CODE,
+		APP_NAME NAME,
+		'APP' TYPE,
+		'FIcon01' ICON_SKIN,
+		'1' IS_PARENT,
+		APP_ID EXTEND_ATTR,
+		APP_NAME MENU_LABEL,
+		'' MENU_ACTION,
+		'' MENU_PARAM,
+		'0' IS_LEAF,
+		'' MENU_CSS
+		FROM
+		AUTH_APPLICATION
+		WHERE
+		(
+		APP_ID != 'root'
+		)
+		)
+		UNION ALL(
+		SELECT
+		MENU.MENU_ID ID,
+		MENU.PARENT_ID PID,
+		MENU.DISPLAY_ORDER CODE,
+		MENU.MENU_NAME NAME,
+		CASE MENU.IS_LEAF WHEN '0' THEN 'PARENT_MENU' ELSE 'LEAF_MENU' END TYPE,
+		IFNULL(MENU.ICON_SKIN,(CASE MENU.IS_LEAF WHEN '0' THEN 'RFIcon02' ELSE
+		'RFicon03' END)) ICON_SKIN,
+		CASE MENU.IS_LEAF WHEN '0' THEN '1' ELSE '0' END IS_PARENT,
+		MENU.APP_ID EXTEND_ATTR,
+		<!-- CONCAT(FUNC.FUNC_ACTION,FUNC.PARA_INFO) EXTEND_ATTR_1, -->
+		MENU.MENU_LABEL MENU_LABEL,
+		FUNC.FUNC_ACTION MENU_ACTION,
+		FUNC.PARA_INFO MENU_PARAM,
+		IS_LEAF,
+		MENU_CSS
+		FROM
+		AUTH_MENU MENU
+		LEFT JOIN AUTH_FUNCTION FUNC
+		ON MENU.FUNC_ID = FUNC.FUNC_ID
+		WHERE 1=1
+
+		)
+		) T
+		WHERE 1=1
+		<if test="_parameter != null">
+			AND (T.ID IN (${_parameter}) OR T.TYPE='APP' OR T.TYPE='ROOT' )
+		</if>
+		ORDER BY T.CODE
+	</select>
+
+	<delete id="batchDelete" parameterType="map">
+		DELETE FROM AUTH_CUSTOM_MENU
+		WHERE 1=2
+		<if test="MENU_CUSTOM_CODES != null">
+			OR (MENU_OPERATOR_CUSTOM_CODE IN (${MENU_CUSTOM_CODES}) AND OPERATOR_ID
+			= #{OPERATOR_ID})
+		</if>
+	</delete>
+</mapper>

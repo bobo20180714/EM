@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.sys.mappers.SysDictionaryTypeMapper" >
+
+  <resultMap id="BaseResultMap" type="com.em.core.sys.dictionary.type.entity.SysDictionaryType" >
+    <id column="DIC_TYPE_ID" property="dicTypeId" jdbcType="VARCHAR" />
+    <result column="TYPE_NAME" property="typeName" jdbcType="VARCHAR" />
+    <result column="TYPE_CODE" property="typeCode" jdbcType="VARCHAR" />
+    <result column="IS_USE" property="isUse" jdbcType="VARCHAR" />
+  </resultMap>
+   
+  <sql id="Base_Column_List" >
+    DIC_TYPE_ID, TYPE_NAME, TYPE_CODE, IS_USE
+  </sql>
+  
+  <select id="getByMap" resultType="map" parameterType="string" >
+		SELECT DIC_TYPE_ID,TYPE_NAME,TYPE_CODE,IS_USE
+    	FROM SYS_DICTIONARY_TYPE
+    	WHERE DIC_TYPE_ID = #{DIC_TYPE_ID}
+	</select>
+   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    	FROM SYS_DICTIONARY_TYPE
+    	WHERE DIC_TYPE_ID = #{dicTypeId, jdbcType=VARCHAR}
+	</select>
+	<select id="count" resultType="int" parameterType="map">
+		SELECT
+		COUNT(*)
+		FROM SYS_DICTIONARY_TYPE
+		WHERE 1=1
+		<if test="LIKE_STR != null">
+			AND (${LIKE_STR})
+		</if>
+	</select>
+	<select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    	SELECT DIC_TYPE_ID,TYPE_NAME,TYPE_CODE
+    	FROM SYS_DICTIONARY_TYPE
+    	WHERE 1=1
+    	<if test="typeCode != null" >
+      	AND  TYPE_CODE = #{typeCode, jdbcType=VARCHAR}
+    	</if>
+    	<if test="dicTypeId != null" >
+      	AND  DIC_TYPE_ID = #{dicTypeId, jdbcType=VARCHAR}
+    	</if>
+    	<if test="notId != null" >
+      	AND  DIC_TYPE_ID != #{notId}
+    	</if>
+	</select>
+	
+	<select id="queryPage" resultMap="BaseResultMap" parameterType="map" >
+    	SELECT DIC_TYPE_ID,TYPE_NAME,TYPE_CODE
+    	FROM SYS_DICTIONARY_TYPE
+    	WHERE 1=1
+    </select>
+    <insert id="insert" parameterType="com.em.core.sys.dictionary.type.entity.SysDictionaryType" >
+    	INSERT INTO SYS_DICTIONARY_TYPE (DIC_TYPE_ID,TYPE_NAME,TYPE_CODE,IS_USE)
+    	VALUES (#{dicTypeId, jdbcType=VARCHAR}, #{typeName, jdbcType=VARCHAR}, #{typeCode,jdbcType=VARCHAR}, 
+      	#{isUse, jdbcType=VARCHAR})
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.em.core.sys.dictionary.type.entity.SysDictionaryType" >
+   		UPDATE SYS_DICTIONARY_TYPE
+    <set >
+      <if test="typeName != null" >
+        TYPE_NAME = #{typeName, jdbcType=VARCHAR},
+      </if>
+      <if test="typeCode != null" >
+        TYPE_CODE = #{typeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="isUse != null" >
+        IS_USE = #{isUse, jdbcType=VARCHAR},
+      </if>    
+    </set>
+    WHERE DIC_TYPE_ID = #{dicTypeId, jdbcType=VARCHAR}
+  </update>
+
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from SYS_DICTIONARY_TYPE
+    where DIC_TYPE_ID = #{dicTypeId,jdbcType=VARCHAR}
+  </delete>
+  
+  <delete id="batchDelete" parameterType="map" >
+    DELETE FROM SYS_DICTIONARY_TYPE
+    WHERE 1=2
+    <if test="DIC_IDS != null" >
+     OR   DIC_TYPE_ID IN (${DIC_IDS})
+    </if>
+  </delete>
+  
+  
+  
+</mapper>

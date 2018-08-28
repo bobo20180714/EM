@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.group.entity.OrgGroup" >
+    <id column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="PARENT_GROUP_ID" property="parentGroupId" jdbcType="VARCHAR" />
+    <result column="GROUP_LEVEL" property="groupLevel" jdbcType="INTEGER" />
+    <result column="GROUP_NAME" property="groupName" jdbcType="VARCHAR" />
+    <result column="GROUP_DESC" property="groupDesc" jdbcType="VARCHAR" />
+    <result column="GROUP_TYPE" property="groupType" jdbcType="VARCHAR" />
+    <result column="GROUP_SEQ" property="groupSeq" jdbcType="VARCHAR" />
+    <result column="START_DATE" property="startDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="GROUP_STATUS" property="groupStatus" jdbcType="VARCHAR" />
+    <result column="MANAGER" property="manager" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="LASTUP_DATE" property="lastupDate" jdbcType="VARCHAR" />
+    <result column="UPDATOR" property="updator" jdbcType="VARCHAR" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+    <result column="PARENT_GROUP_NAME" property="parentGroupName" jdbcType="VARCHAR" />
+  </resultMap>
+  <resultMap id="GroupTreeNodeResultMap" type="com.em.core.org.group.entity.OrgGroupTreeNode" >
+	    <id column="ID" property="id" jdbcType="VARCHAR" />
+	    <result column="PID" property="pId" jdbcType="VARCHAR" />
+	    <result column="NAME" property="name" jdbcType="VARCHAR" />
+	    <result column="TYPE" property="type" jdbcType="VARCHAR" />
+	    <result column="ICON_SKIN" property="iconSkin" jdbcType="VARCHAR" />
+	    <result column="IS_PARENT" property="isParent" jdbcType="CHAR" />
+	    <result column="EXTEND_ATTR" property="extendAttr" jdbcType="VARCHAR" />
+	    <result column="EXTEND_ATTR_1" property="extendAttr1" jdbcType="VARCHAR" />
+	  <!--  <result column="GROUP_LABEL" property="groupLabel" jdbcType="VARCHAR" />
+ 	    <result column="GROUP_ACTION" property="groupAction" jdbcType="VARCHAR" />
+	    <result column="GROUP_PARAM" property="groupParam" jdbcType="VARCHAR" /> -->
+	    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+	</resultMap>
+  <sql id="Base_Column_List" >
+    GROUP_ID, ORG_ID, PARENT_GROUP_ID, GROUP_LEVEL, GROUP_NAME, GROUP_DESC, GROUP_TYPE, 
+    	GROUP_SEQ, START_DATE, END_DATE, GROUP_STATUS, MANAGER, CREATE_TIME, LASTUP_DATE, 
+    	UPDATOR, IS_LEAF,(SELECT GROUP_NAME FROM ORG_GROUP a WHERE a.GROUP_ID=ORG_GROUP.PARENT_GROUP_ID ) PARENT_GROUP_NAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORG_GROUP
+    where GROUP_ID = #{groupId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ORG_GROUP
+    where GROUP_ID = #{groupId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.group.entity.OrgGroup" >
+    insert into ORG_GROUP (GROUP_ID, ORG_ID, PARENT_GROUP_ID, 
+      GROUP_LEVEL, GROUP_NAME, GROUP_DESC, 
+      GROUP_TYPE, GROUP_SEQ, START_DATE, 
+      END_DATE, GROUP_STATUS, MANAGER, 
+      CREATE_TIME, LASTUP_DATE, UPDATOR, 
+      IS_LEAF)
+    values (#{groupId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, #{parentGroupId,jdbcType=VARCHAR}, 
+      #{groupLevel,jdbcType=INTEGER}, #{groupName,jdbcType=VARCHAR}, #{groupDesc,jdbcType=VARCHAR}, 
+      #{groupType,jdbcType=VARCHAR}, #{groupSeq,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR}, 
+      #{endDate,jdbcType=VARCHAR}, #{groupStatus,jdbcType=VARCHAR}, #{manager,jdbcType=VARCHAR}, 
+      #{createTime,jdbcType=VARCHAR}, #{lastupDate,jdbcType=VARCHAR}, #{updator,jdbcType=VARCHAR}, 
+      #{isLeaf,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.group.entity.OrgGroup" >
+    insert into ORG_GROUP
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="parentGroupId != null" >
+        PARENT_GROUP_ID,
+      </if>
+      <if test="groupLevel != null" >
+        GROUP_LEVEL,
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME,
+      </if>
+      <if test="groupDesc != null" >
+        GROUP_DESC,
+      </if>
+      <if test="groupType != null" >
+        GROUP_TYPE,
+      </if>
+      <if test="groupSeq != null" >
+        GROUP_SEQ,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="groupStatus != null" >
+        GROUP_STATUS,
+      </if>
+      <if test="manager != null" >
+        MANAGER,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="lastupDate != null" >
+        LASTUP_DATE,
+      </if>
+      <if test="updator != null" >
+        UPDATOR,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentGroupId != null" >
+        #{parentGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupLevel != null" >
+        #{groupLevel,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDesc != null" >
+        #{groupDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="groupType != null" >
+        #{groupType,jdbcType=VARCHAR},
+      </if>
+      <if test="groupSeq != null" >
+        #{groupSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="groupStatus != null" >
+        #{groupStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null" >
+        #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupDate != null" >
+        #{lastupDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.org.group.entity.OrgGroup" >
+    update ORG_GROUP
+    <set >
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="parentGroupId != null" >
+        PARENT_GROUP_ID = #{parentGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupLevel != null" >
+        GROUP_LEVEL = #{groupLevel,jdbcType=INTEGER},
+      </if>
+      <if test="groupName != null" >
+        GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+      </if>
+      <if test="groupDesc != null" >
+        GROUP_DESC = #{groupDesc,jdbcType=VARCHAR},
+      </if>
+      <if test="groupType != null" >
+        GROUP_TYPE = #{groupType,jdbcType=VARCHAR},
+      </if>
+      <if test="groupSeq != null" >
+        GROUP_SEQ = #{groupSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="groupStatus != null" >
+        GROUP_STATUS = #{groupStatus,jdbcType=VARCHAR},
+      </if>
+      <if test="manager != null" >
+        MANAGER = #{manager,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastupDate != null" >
+        LASTUP_DATE = #{lastupDate,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        UPDATOR = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      </if>
+    </set>
+    where GROUP_ID = #{groupId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.org.group.entity.OrgGroup" >
+    update ORG_GROUP
+    set ORG_ID = #{orgId,jdbcType=VARCHAR},
+      PARENT_GROUP_ID = #{parentGroupId,jdbcType=VARCHAR},
+      GROUP_LEVEL = #{groupLevel,jdbcType=INTEGER},
+      GROUP_NAME = #{groupName,jdbcType=VARCHAR},
+      GROUP_DESC = #{groupDesc,jdbcType=VARCHAR},
+      GROUP_TYPE = #{groupType,jdbcType=VARCHAR},
+      GROUP_SEQ = #{groupSeq,jdbcType=VARCHAR},
+      START_DATE = #{startDate,jdbcType=VARCHAR},
+      END_DATE = #{endDate,jdbcType=VARCHAR},
+      GROUP_STATUS = #{groupStatus,jdbcType=VARCHAR},
+      MANAGER = #{manager,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      LASTUP_DATE = #{lastupDate,jdbcType=VARCHAR},
+      UPDATOR = #{updator,jdbcType=VARCHAR},
+      IS_LEAF = #{isLeaf,jdbcType=CHAR}
+    where GROUP_ID = #{groupId,jdbcType=VARCHAR}
+  </update>
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.org.group.entity.OrgGroup" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ORG_GROUP
+    WHERE 1=1
+    <if test="orgId != null" >
+      AND ORG_ID = #{orgId}
+    </if>
+  </select>
+  <select id="queryUpdate" resultMap="BaseResultMap" parameterType="String" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ORG_GROUP
+    WHERE 1=1
+    <if test="orgId != null" >
+      AND ORG_ID = #{orgId}
+    </if>
+  </select>    
+  <select id="queryChildrenTreeNodes" resultMap="GroupTreeNodeResultMap" parameterType="string" >
+	SELECT * FROM (       
+		(SELECT GROUP_ID ID,
+			'-1' PID,ORG_ID CODE,'工作组树' NAME,'ROOT' TYPE,'FRoot' ICON_SKIN,
+			'1' IS_PARENT,	GROUP_LEVEL EXTEND_ATTR,'' EXTEND_ATTR_1,
+			'0' IS_LEAF
+			FROM ORG_GROUP WHERE GROUP_ID = 'root')
+		UNION ALL
+		(SELECT GROUP_ID ID,PARENT_GROUP_ID PID,ORG_ID CODE,Group_NAME NAME,
+				'group' TYPE,
+		(CASE GROUP_LEVEL WHEN '1' THEN 'FIcon01' ELSE 'RFIcon02' END) ICON_SKIN,
+				'1' IS_PARENT,GROUP_LEVEL EXTEND_ATTR,'' EXTEND_ATTR_1,
+				IS_LEAF
+			FROM ORG_GROUP WHERE GROUP_ID != 'root')
+		UNION ALL
+		(SELECT
+			EMP.EMP_ID ID,TEMP.GROUP_ID PID,EMP.EMP_CODE CODE,EMP.EMP_NAME NAME,'LEAF' TYPE,
+			'RFicon03' ICON_SKIN,'0' IS_PARENT,EMP.EMP_ID EXTEND_ATTR,
+			'' EXTEND_ATTR_1,'1' IS_LEAF
+		FROM ORG_EMPLOYEE EMP,ORG_EMPLOYEE_GROUP TEMP
+		WHERE EMP.EMP_ID=TEMP.EMP_ID 
+		) 
+	) T
+	WHERE 1=1
+	<if test="_parameter == null" >
+		AND T.PID in ('-1','root')
+	</if>
+	<if test="_parameter != null" >
+		AND T.PID = #{_parameter}
+	</if>
+	ORDER BY T.CODE
+  </select>
+</mapper>

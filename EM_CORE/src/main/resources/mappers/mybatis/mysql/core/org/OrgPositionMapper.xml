@@ -1,0 +1,228 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgPositionMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.position.entity.OrgPosition" >
+    <id column="POSITION_ID" property="positionId" jdbcType="VARCHAR" />
+    <result column="POSI_CODE" property="posiCode" jdbcType="VARCHAR" />
+    <result column="POSI_NAME" property="posiName" jdbcType="VARCHAR" />
+    <result column="POSI_LEVEL" property="posiLevel" jdbcType="DECIMAL" />
+    <result column="PARENT_POSI_ID" property="parentPosiId" jdbcType="VARCHAR" />
+    <result column="ORG_ID" property="orgId" jdbcType="VARCHAR" />
+    <result column="POSITION_SEQ" property="positionSeq" jdbcType="VARCHAR" />
+    <result column="POSI_TYPE" property="posiType" jdbcType="VARCHAR" />
+    <result column="CREATE_TIME" property="createTime" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATE_TIME" property="lastUpdateTime" jdbcType="VARCHAR" />
+    <result column="UPDATOR" property="updator" jdbcType="VARCHAR" />
+    <result column="START_DATE" property="startDate" jdbcType="VARCHAR" />
+    <result column="END_DATE" property="endDate" jdbcType="VARCHAR" />
+    <result column="STATUS" property="status" jdbcType="VARCHAR" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+    <result column="ORG_NAME" property="orgName" jdbcType="VARCHAR" />
+    <result column="PARENT_POSI_NAME" property="parentPostName" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+      POSITION_ID, POSI_CODE, POSI_NAME, POSI_LEVEL, PARENT_POSI_ID, ORG_ID, POSITION_SEQ, POSI_TYPE, 
+    CREATE_TIME, LAST_UPDATE_TIME, UPDATOR, START_DATE, END_DATE, STATUS, IS_LEAF,
+    (SELECT ORG_NAME FROM ORG_ORGANIZATION P_ORG WHERE P_ORG.ORG_ID=ORG_POSITION.ORG_ID ) ORG_NAME,
+    (SELECT POSI_NAME FROM ORG_POSITION P_POSI WHERE P_POSI.POSITION_ID=PARENT_POSI_ID ) PARENT_POSI_NAME
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from ORG_POSITION
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from ORG_POSITION
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.position.entity.OrgPosition" >
+    insert into ORG_POSITION (POSITION_ID, POSI_CODE, POSI_NAME, 
+      POSI_LEVEL, PARENT_POSI_ID, ORG_ID, 
+      POSITION_SEQ, POSI_TYPE, CREATE_TIME, 
+      LAST_UPDATE_TIME, UPDATOR, START_DATE, 
+      END_DATE, STATUS, IS_LEAF
+      )
+    values (#{positionId,jdbcType=VARCHAR}, #{posiCode,jdbcType=VARCHAR}, #{posiName,jdbcType=VARCHAR}, 
+      #{posiLevel,jdbcType=DECIMAL}, #{parentPosiId,jdbcType=VARCHAR}, #{orgId,jdbcType=VARCHAR}, 
+      #{positionSeq,jdbcType=VARCHAR}, #{posiType,jdbcType=VARCHAR}, #{createTime,jdbcType=VARCHAR}, 
+      #{lastUpdateTime,jdbcType=VARCHAR}, #{updator,jdbcType=VARCHAR}, #{startDate,jdbcType=VARCHAR}, 
+      #{endDate,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{isLeaf,jdbcType=CHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.position.entity.OrgPosition" >
+    insert into ORG_POSITION
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="positionId != null" >
+        POSITION_ID,
+      </if>
+      <if test="posiCode != null" >
+        POSI_CODE,
+      </if>
+      <if test="posiName != null" >
+        POSI_NAME,
+      </if>
+      <if test="posiLevel != null" >
+        POSI_LEVEL,
+      </if>
+      <if test="parentPosiId != null" >
+        PARENT_POSI_ID,
+      </if>
+      <if test="orgId != null" >
+        ORG_ID,
+      </if>
+      <if test="positionSeq != null" >
+        POSITION_SEQ,
+      </if>
+      <if test="posiType != null" >
+        POSI_TYPE,
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME,
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME,
+      </if>
+      <if test="updator != null" >
+        UPDATOR,
+      </if>
+      <if test="startDate != null" >
+        START_DATE,
+      </if>
+      <if test="endDate != null" >
+        END_DATE,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="positionId != null" >
+        #{positionId,jdbcType=VARCHAR},
+      </if>
+      <if test="posiCode != null" >
+        #{posiCode,jdbcType=VARCHAR},
+      </if>
+      <if test="posiName != null" >
+        #{posiName,jdbcType=VARCHAR},
+      </if>
+      <if test="posiLevel != null" >
+        #{posiLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="parentPosiId != null" >
+        #{parentPosiId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionSeq != null" >
+        #{positionSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="posiType != null" >
+        #{posiType,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        #{lastUpdateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.org.position.entity.OrgPosition" >
+    update ORG_POSITION
+    <set >
+      <if test="posiCode != null" >
+        POSI_CODE = #{posiCode,jdbcType=VARCHAR},
+      </if>
+      <if test="posiName != null" >
+        POSI_NAME = #{posiName,jdbcType=VARCHAR},
+      </if>
+      <if test="posiLevel != null" >
+        POSI_LEVEL = #{posiLevel,jdbcType=DECIMAL},
+      </if>
+      <if test="parentPosiId != null" >
+        PARENT_POSI_ID = #{parentPosiId,jdbcType=VARCHAR},
+      </if>
+      <if test="orgId != null" >
+        ORG_ID = #{orgId,jdbcType=VARCHAR},
+      </if>
+      <if test="positionSeq != null" >
+        POSITION_SEQ = #{positionSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="posiType != null" >
+        POSI_TYPE = #{posiType,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdateTime != null" >
+        LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+      </if>
+      <if test="updator != null" >
+        UPDATOR = #{updator,jdbcType=VARCHAR},
+      </if>
+      <if test="startDate != null" >
+        START_DATE = #{startDate,jdbcType=VARCHAR},
+      </if>
+      <if test="endDate != null" >
+        END_DATE = #{endDate,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      </if>
+    </set>
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.org.position.entity.OrgPosition" >
+    update ORG_POSITION
+    set POSI_CODE = #{posiCode,jdbcType=VARCHAR},
+      POSI_NAME = #{posiName,jdbcType=VARCHAR},
+      POSI_LEVEL = #{posiLevel,jdbcType=DECIMAL},
+      PARENT_POSI_ID = #{parentPosiId,jdbcType=VARCHAR},
+      ORG_ID = #{orgId,jdbcType=VARCHAR},
+      POSITION_SEQ = #{positionSeq,jdbcType=VARCHAR},
+      POSI_TYPE = #{posiType,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=VARCHAR},
+      LAST_UPDATE_TIME = #{lastUpdateTime,jdbcType=VARCHAR},
+      UPDATOR = #{updator,jdbcType=VARCHAR},
+      START_DATE = #{startDate,jdbcType=VARCHAR},
+      END_DATE = #{endDate,jdbcType=VARCHAR},
+      STATUS = #{status,jdbcType=VARCHAR},
+      IS_LEAF = #{isLeaf,jdbcType=CHAR}
+    where POSITION_ID = #{positionId,jdbcType=VARCHAR}
+  </update>
+  <select id="query" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ORG_POSITION
+    WHERE 1=1
+    <if test="POSI_CODE != null" >
+      AND POSI_CODE = #{POSI_CODE}
+    </if>
+    <if test="NOT_POSITION_ID != null" >
+      AND POSITION_ID != #{NOT_POSITION_ID}
+    </if>
+  </select>
+</mapper>

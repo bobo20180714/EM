@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthRoleFunctionMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.auth.role.function.entity.AuthRoleFunction" >
+    <id column="FUNC_ID" property="funcId" jdbcType="VARCHAR" />
+    <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FUNC_GROUP_ID" property="funcGroupId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FUNC_ID, ROLE_ID, APP_ID, FUNC_GROUP_ID
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="com.em.core.auth.role.function.entity.AuthRoleFunction" >
+    select 
+    <include refid="Base_Column_List" />
+    from AUTH_ROLE_FUNCTION
+    where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+      and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    delete from AUTH_ROLE_FUNCTION
+    where ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <insert id="insert" parameterType="com.em.core.auth.role.function.entity.AuthRoleFunction" >
+    insert into AUTH_ROLE_FUNCTION (FUNC_ID, ROLE_ID, APP_ID, 
+      FUNC_GROUP_ID)
+    values (#{funcId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, 
+      #{funcGroupId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="map" >
+   insert into AUTH_ROLE_FUNCTION (FUNC_ID, ROLE_ID, APP_ID, 
+      FUNC_GROUP_ID)
+    values (#{FUNC_ID,jdbcType=VARCHAR}, #{ROLE_ID,jdbcType=VARCHAR}, #{APP_ID,jdbcType=VARCHAR}, 
+      #{FUNC_GROUP_ID,jdbcType=VARCHAR})
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.role.function.entity.AuthRoleFunction" >
+    update AUTH_ROLE_FUNCTION
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="funcGroupId != null" >
+        FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+      and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.auth.role.function.entity.AuthRoleFunction" >
+    update AUTH_ROLE_FUNCTION
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR}
+    where FUNC_ID = #{funcId,jdbcType=VARCHAR}
+      and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </update>
+   <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.role.function.entity.AuthRoleFunction" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_ROLE_FUNCTION
+    WHERE 1=1
+    <if test="roleId != null" >
+      AND ROLE_ID = #{roleId}
+    </if>
+    <if test="appId != null" >
+      AND APP_ID = #{appId}
+    </if>
+  </select>
+   <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_ROLE_FUNCTION
+    WHERE 1=1
+    <if test="ROLE_ID != null" >
+      AND ROLE_ID = #{ROLE_ID}
+    </if>
+    <if test="APP_ID != null" >
+      AND APP_ID = #{APP_ID}
+    </if>
+  </select>
+  <delete id="batchDelete" parameterType="map" >
+    DELETE FROM AUTH_ROLE_FUNCTION
+    WHERE 1=2
+    <if test="ROLE_IDS != null" >
+      OR ROLE_ID IN (${ROLE_IDS})
+    </if>
+  </delete>
+</mapper>

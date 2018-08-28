@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.org.mappers.OrgEmployeeGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.org.employee.group.entity.OrgEmployeeGroup" >
+    <id column="EMP_ID" property="empId" jdbcType="VARCHAR" />
+    <id column="GROUP_ID" property="groupId" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    GROUP_ID, EMP_ID
+  </sql>
+  <delete id="deleteByPrimaryKey" parameterType="com.em.core.org.employee.group.entity.OrgEmployeeGroup" >
+    delete from ORG_EMPLOYEE_GROUP
+    where 1=1
+    <if test="empId != null" >
+    	AND ORG_ID = #{empId}
+    </if>
+    <if test="groupId != null" >
+    	AND GROUP_ID = #{groupId}
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.em.core.org.employee.group.entity.OrgEmployeeGroup" >
+    insert into ORG_EMPLOYEE_GROUP (EMP_ID, GROUP_ID)
+    values (#{empId,jdbcType=VARCHAR}, #{groupId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.org.employee.group.entity.OrgEmployeeGroup" >
+    insert into ORG_EMPLOYEE_GROUP
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        EMP_ID,
+      </if>
+      <if test="groupId != null" >
+        GROUP_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="empId != null" >
+        #{empId,jdbcType=VARCHAR},
+      </if>
+      <if test="groupId != null" >
+        #{groupId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.org.employee.group.entity.OrgEmployeeGroup" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM ORG_EMPLOYEE_GROUP
+    WHERE 1=1
+    <if test="GROUP_ID != null" >
+      AND GROUP_ID = #{GROUP_ID}
+    </if>
+    <if test="EMP_ID != null" >
+      AND EMP_ID = #{EMP_ID}
+    </if>
+  </select>
+  <delete id="deleteByMap" parameterType="map" >
+    DELETE FROM ORG_EMPLOYEE_GROUP
+    WHERE 1=1
+    <if test="GROUP_ID != null" >
+      AND GROUP_ID = #{GROUP_ID}
+    </if>
+    <if test="EMP_ID != null" >
+      AND EMP_ID = #{EMP_ID}
+    </if>
+    <if test="notInEmpIds != null and notInEmpIds!=''" >
+      AND FIND_IN_SET(EMP_ID,#{notInEmpIds})>0
+    </if>
+  </delete>
+  <insert id="batchInsert" parameterType="list" >
+    insert into ORG_EMPLOYEE_GROUP (EMP_ID, GROUP_ID)
+    values 
+    <foreach collection ="list" item="item" index= "index" separator =",">
+                (#{item.empId,jdbcType=VARCHAR}, #{item.groupId,jdbcType=VARCHAR})
+    </foreach >
+  </insert>
+</mapper>

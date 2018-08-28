@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthFunctionGroupMapper" >
+  <resultMap id="BaseResultMap" type="com.em.core.auth.function.group.entity.AuthFunctionGroup" >
+    <id column="FUNC_GROUP_ID" property="funcGroupId" jdbcType="VARCHAR" />
+    <result column="APP_ID" property="appId" jdbcType="VARCHAR" />
+    <result column="FUNC_GROUP_NAME" property="funcGroupName" jdbcType="VARCHAR" />
+    <result column="PARENT_GROUP" property="parentGroup" jdbcType="VARCHAR" />
+    <result column="GROUP_LEVEL" property="groupLevel" jdbcType="INTEGER" />
+    <result column="FUNC_GROUP_SEQ" property="funcGroupSeq" jdbcType="VARCHAR" />
+    <result column="IS_LEAF" property="isLeaf" jdbcType="CHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    FUNC_GROUP_ID, APP_ID, FUNC_GROUP_NAME, PARENT_GROUP, GROUP_LEVEL, FUNC_GROUP_SEQ, 
+    IS_LEAF
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from AUTH_FUNCTION_GROUP
+    where FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String" >
+    DELETE AUTH_FUNCTION_GROUP
+    FROM 
+    (
+		SELECT FUNC_GROUP_ID FROM AUTH_FUNCTION_GROUP WHERE FIND_IN_SET(AUTH_FUNCTION_GROUP.FUNC_GROUP_ID, AUTH_FUNCTION_GROUP_QUERY_CHILDREN(#{funcGroupId}))>0
+	) T
+	INNER JOIN AUTH_FUNCTION_GROUP
+    ON T.FUNC_GROUP_ID = AUTH_FUNCTION_GROUP.FUNC_GROUP_ID
+  </delete>
+  <insert id="insert" parameterType="com.em.core.auth.function.group.entity.AuthFunctionGroup" >
+    insert into AUTH_FUNCTION_GROUP (FUNC_GROUP_ID, APP_ID, FUNC_GROUP_NAME, 
+      PARENT_GROUP, GROUP_LEVEL, FUNC_GROUP_SEQ, 
+      IS_LEAF)
+    values (#{funcGroupId,jdbcType=VARCHAR}, #{appId,jdbcType=VARCHAR}, #{funcGroupName,jdbcType=VARCHAR}, 
+      #{parentGroup,jdbcType=VARCHAR}, #{groupLevel,jdbcType=INTEGER}, #{funcGroupSeq,jdbcType=VARCHAR}, 
+      #{isLeaf,jdbcType=CHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.auth.function.group.entity.AuthFunctionGroup" >
+    insert into AUTH_FUNCTION_GROUP
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="funcGroupId != null" >
+        FUNC_GROUP_ID,
+      </if>
+      <if test="appId != null" >
+        APP_ID,
+      </if>
+      <if test="funcGroupName != null" >
+        FUNC_GROUP_NAME,
+      </if>
+      <if test="parentGroup != null" >
+        PARENT_GROUP,
+      </if>
+      <if test="groupLevel != null" >
+        GROUP_LEVEL,
+      </if>
+      <if test="funcGroupSeq != null" >
+        FUNC_GROUP_SEQ,
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="funcGroupId != null" >
+        #{funcGroupId,jdbcType=VARCHAR},
+      </if>
+      <if test="appId != null" >
+        #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="funcGroupName != null" >
+        #{funcGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentGroup != null" >
+        #{parentGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="groupLevel != null" >
+        #{groupLevel,jdbcType=INTEGER},
+      </if>
+      <if test="funcGroupSeq != null" >
+        #{funcGroupSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        #{isLeaf,jdbcType=CHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.em.core.auth.function.group.entity.AuthFunctionGroup" >
+    update AUTH_FUNCTION_GROUP
+    <set >
+      <if test="appId != null" >
+        APP_ID = #{appId,jdbcType=VARCHAR},
+      </if>
+      <if test="funcGroupName != null" >
+        FUNC_GROUP_NAME = #{funcGroupName,jdbcType=VARCHAR},
+      </if>
+      <if test="parentGroup != null" >
+        PARENT_GROUP = #{parentGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="groupLevel != null" >
+        GROUP_LEVEL = #{groupLevel,jdbcType=INTEGER},
+      </if>
+      <if test="funcGroupSeq != null" >
+        FUNC_GROUP_SEQ = #{funcGroupSeq,jdbcType=VARCHAR},
+      </if>
+      <if test="isLeaf != null" >
+        IS_LEAF = #{isLeaf,jdbcType=CHAR},
+      </if>
+    </set>
+    where FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.em.core.auth.function.group.entity.AuthFunctionGroup" >
+    update AUTH_FUNCTION_GROUP
+    set APP_ID = #{appId,jdbcType=VARCHAR},
+      FUNC_GROUP_NAME = #{funcGroupName,jdbcType=VARCHAR},
+      PARENT_GROUP = #{parentGroup,jdbcType=VARCHAR},
+      GROUP_LEVEL = #{groupLevel,jdbcType=INTEGER},
+      FUNC_GROUP_SEQ = #{funcGroupSeq,jdbcType=VARCHAR},
+      IS_LEAF = #{isLeaf,jdbcType=CHAR}
+    where FUNC_GROUP_ID = #{funcGroupId,jdbcType=VARCHAR}
+  </update>
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.function.group.entity.AuthFunctionGroup" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_FUNCTION_GROUP
+    WHERE 1=1
+  </select>
+  <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />
+    FROM AUTH_FUNCTION_GROUP
+    WHERE 1=1
+  </select>
+</mapper>

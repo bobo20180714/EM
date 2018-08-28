@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"  
+ "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!-- mybatis全局配置文件 -->
+<configuration>
+	<settings>
+		<setting value="true" name="cacheEnabled"/> <!-- 使用缓存 -->
+		<!-- 设置但JDBC类型为空时,某些驱动程序 要指定值,default:OTHER -->
+		<setting name="jdbcTypeForNull" value="VARCHAR"/>
+	</settings>
+</configuration>

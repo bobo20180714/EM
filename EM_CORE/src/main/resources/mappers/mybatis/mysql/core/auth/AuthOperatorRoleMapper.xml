@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.em.core.auth.mappers.AuthOperatorRoleMapper" >
+  <sql id="Base_Column_List" >
+    AUTH_OPERATOR_ROLE.OPERATOR_ID, AUTH_OPERATOR_ROLE.ROLE_ID
+  </sql>
+  <resultMap id="BaseResultMap" type="com.em.core.auth.operator.role.entity.AuthOperatorRole" >
+    <id column="OPERATOR_ID" property="operatorId" jdbcType="VARCHAR" />
+    <id column="ROLE_ID" property="roleId" jdbcType="VARCHAR" />
+    <result column="ROLE_NAME" property="roleName" jdbcType="VARCHAR" />
+  </resultMap>
+  <delete id="deleteByPrimaryKey" parameterType="com.em.core.auth.operator.role.entity.AuthOperatorRole" >
+    delete from AUTH_OPERATOR_ROLE
+    where OPERATOR_ID = #{operatorId,jdbcType=VARCHAR}
+      and ROLE_ID = #{roleId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="deleteBySelective" parameterType="map" >
+    delete from AUTH_OPERATOR_ROLE
+    <where>
+     <if test="ROLE_ID != null" >
+      AND ROLE_ID = #{ROLE_ID}
+    </if>
+    <if test="OPERATOR_ID != null" >
+      AND OPERATOR_ID = #{OPERATOR_ID}
+    </if>
+    <if test="notInOperatorIds != null and notInOperatorIds!=''" >
+      AND FIND_IN_SET(OPERATOR_ID,#{notInOperatorIds})>0
+    </if>
+    </where>
+  </delete>
+  <insert id="insert" parameterType="com.em.core.auth.operator.role.entity.AuthOperatorRole" >
+    insert into AUTH_OPERATOR_ROLE (OPERATOR_ID, ROLE_ID)
+    values (#{operatorId,jdbcType=VARCHAR}, #{roleId,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.em.core.auth.operator.role.entity.AuthOperatorRole" >
+    insert into AUTH_OPERATOR_ROLE
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="operatorId != null" >
+        OPERATOR_ID,
+      </if>
+      <if test="roleId != null" >
+        ROLE_ID,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="operatorId != null" >
+        #{operatorId,jdbcType=VARCHAR},
+      </if>
+      <if test="roleId != null" >
+        #{roleId,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  
+   <delete id="delete" parameterType="string" >
+    DELETE FROM AUTH_OPERATOR_ROLE
+    WHERE 1=1
+    <if test="ROLE_ID != null" >
+      AND ROLE_ID = #{ROLE_ID}
+    </if>
+    <if test="OPERATOR_ID != null" >
+      AND OPERATOR_ID = #{OPERATOR_ID}
+    </if>
+    <if test="notInOperatorIds != null and notInOperatorIds!=''" >
+      AND FIND_IN_SET(OPERATOR_ID,#{notInOperatorIds})>0
+    </if>
+  </delete>
+  
+  <insert id="batchInsert" parameterType="List">
+	INSERT INTO AUTH_OPERATOR_ROLE (OPERATOR_ID, ROLE_ID) VALUES
+	<foreach collection="list" item="record" index="index" separator=",">
+		( #{record.OPERATOR_ID}, #{record.ROLE_ID} )
+	</foreach>
+  </insert>
+  
+  <select id="query" resultMap="BaseResultMap" parameterType="com.em.core.auth.operator.role.entity.AuthOperatorRole" >
+    SELECT
+    <include refid="Base_Column_List" />,AUTH_ROLE.ROLE_NAME
+    FROM AUTH_OPERATOR_ROLE,AUTH_ROLE
+    WHERE AUTH_OPERATOR_ROLE.ROLE_ID = AUTH_ROLE.ROLE_ID
+    <if test="roleId != null" >
+      AND AUTH_OPERATOR_ROLE.ROLE_ID = #{roleId}
+    </if>
+    <if test="operatorId != null" >
+      AND AUTH_OPERATOR_ROLE.OPERATOR_ID = #{operatorId}
+    </if>
+  </select>
+   <select id="queryByMap" resultMap="BaseResultMap" parameterType="map" >
+    SELECT
+    <include refid="Base_Column_List" />,AUTH_ROLE.ROLE_NAME
+    FROM AUTH_OPERATOR_ROLE,AUTH_ROLE
+    WHERE AUTH_OPERATOR_ROLE.ROLE_ID = AUTH_ROLE.ROLE_ID
+    <if test="ROLE_ID != null" >
+      AND AUTH_OPERATOR_ROLE.ROLE_ID = #{ROLE_ID}
+    </if>
+    <if test="OPERATOR_ID != null" >
+      AND AUTH_OPERATOR_ROLE.OPERATOR_ID = #{OPERATOR_ID}
+    </if>
+  </select>
+  <delete id="batchDelete" parameterType="map" >
+    DELETE FROM AUTH_OPERATOR_ROLE
+    WHERE 1=2
+    <if test="ROLE_IDS != null" >
+     OR   ROLE_ID IN (${ROLE_IDS})
+    </if>
+  </delete>
+</mapper>
